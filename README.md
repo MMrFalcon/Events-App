@@ -1,4 +1,6 @@
-# events
+# Events-App
+
+[![CircleCI](https://circleci.com/gh/MMrFalcon/Events-App.svg?style=svg&circle-token=3552cefe600e47701287f0e74eff9a538068da53)](https://circleci.com/gh/MMrFalcon/Events-App)
 
 This application was generated using JHipster 6.1.2, you can find documentation and help at [https://www.jhipster.tech/documentation-archive/v6.1.2](https://www.jhipster.tech/documentation-archive/v6.1.2).
 
