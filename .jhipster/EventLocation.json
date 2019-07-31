@@ -1,0 +1,33 @@
+{
+    "name": "EventLocation",
+    "fields": [
+        {
+            "fieldName": "locationName",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "eventDayOfWeek",
+            "fieldType": "Integer"
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "one-to-many",
+            "otherEntityName": "event",
+            "otherEntityRelationshipName": "eventLocation",
+            "relationshipName": "event"
+        }
+    ],
+    "changelogDate": "20190731131532",
+    "entityTableName": "event_location",
+    "dto": "mapstruct",
+    "pagination": "pagination",
+    "service": "serviceImpl",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "clientRootFolder": "",
+    "applications": "*"
+}
