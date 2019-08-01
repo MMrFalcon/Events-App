@@ -1,0 +1,39 @@
+{
+    "name": "Event",
+    "fields": [
+        {
+            "fieldName": "eventDate",
+            "fieldType": "LocalDate",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "eventCode",
+            "fieldType": "String"
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipName": "eventLocation",
+            "otherEntityName": "eventLocation",
+            "relationshipType": "many-to-one",
+            "otherEntityField": "id"
+        },
+        {
+            "relationshipType": "one-to-many",
+            "otherEntityName": "eventAttendance",
+            "otherEntityRelationshipName": "event",
+            "relationshipName": "eventAttendance"
+        }
+    ],
+    "changelogDate": "20190731233158",
+    "entityTableName": "event",
+    "dto": "mapstruct",
+    "pagination": "pagination",
+    "service": "serviceImpl",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "clientRootFolder": "",
+    "applications": "*"
+}

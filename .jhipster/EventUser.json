@@ -1,0 +1,34 @@
+{
+    "name": "EventUser",
+    "fields": [
+        {
+            "fieldName": "username",
+            "fieldType": "String"
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "one-to-one",
+            "otherEntityName": "eventLocation",
+            "otherEntityRelationshipName": "eventUser",
+            "relationshipName": "homeLocation",
+            "otherEntityField": "id",
+            "ownerSide": true
+        },
+        {
+            "relationshipType": "one-to-many",
+            "otherEntityName": "eventAttendance",
+            "otherEntityRelationshipName": "eventUser",
+            "relationshipName": "eventAttendance"
+        }
+    ],
+    "changelogDate": "20190731233200",
+    "entityTableName": "event_user",
+    "dto": "mapstruct",
+    "pagination": "no",
+    "service": "serviceImpl",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "clientRootFolder": "",
+    "applications": "*"
+}
