@@ -2,6 +2,8 @@ package com.falcon.events.domain;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * A EventUser.
@@ -22,6 +24,9 @@ public class EventUser implements Serializable {
     @OneToOne
     @JoinColumn(unique = true)
     private EventLocation homeLocation;
+
+    @OneToMany(mappedBy = "eventUser")
+    private Set<EventAttendance> eventAttendances = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
@@ -56,6 +61,31 @@ public class EventUser implements Serializable {
 
     public void setHomeLocation(EventLocation eventLocation) {
         this.homeLocation = eventLocation;
+    }
+
+    public Set<EventAttendance> getEventAttendances() {
+        return eventAttendances;
+    }
+
+    public EventUser eventAttendances(Set<EventAttendance> eventAttendances) {
+        this.eventAttendances = eventAttendances;
+        return this;
+    }
+
+    public EventUser addEventAttendance(EventAttendance eventAttendance) {
+        this.eventAttendances.add(eventAttendance);
+        eventAttendance.setEventUser(this);
+        return this;
+    }
+
+    public EventUser removeEventAttendance(EventAttendance eventAttendance) {
+        this.eventAttendances.remove(eventAttendance);
+        eventAttendance.setEventUser(null);
+        return this;
+    }
+
+    public void setEventAttendances(Set<EventAttendance> eventAttendances) {
+        this.eventAttendances = eventAttendances;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 

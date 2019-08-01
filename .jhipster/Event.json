@@ -27,7 +27,7 @@
             "relationshipName": "eventAttendance"
         }
     ],
-    "changelogDate": "20190731131533",
+    "changelogDate": "20190731233158",
     "entityTableName": "event",
     "dto": "mapstruct",
     "pagination": "pagination",

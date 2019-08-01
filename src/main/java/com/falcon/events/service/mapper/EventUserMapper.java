@@ -15,6 +15,8 @@ public interface EventUserMapper extends EntityMapper<EventUserDTO, EventUser> {
     EventUserDTO toDto(EventUser eventUser);
 
     @Mapping(source = "homeLocationId", target = "homeLocation")
+    @Mapping(target = "eventAttendances", ignore = true)
+    @Mapping(target = "removeEventAttendance", ignore = true)
     EventUser toEntity(EventUserDTO eventUserDTO);
 
     default EventUser fromId(Long id) {

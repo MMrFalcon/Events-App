@@ -14,9 +14,15 @@
             "relationshipName": "homeLocation",
             "otherEntityField": "id",
             "ownerSide": true
+        },
+        {
+            "relationshipType": "one-to-many",
+            "otherEntityName": "eventAttendance",
+            "otherEntityRelationshipName": "eventUser",
+            "relationshipName": "eventAttendance"
         }
     ],
-    "changelogDate": "20190731131535",
+    "changelogDate": "20190731233200",
     "entityTableName": "event_user",
     "dto": "mapstruct",
     "pagination": "no",

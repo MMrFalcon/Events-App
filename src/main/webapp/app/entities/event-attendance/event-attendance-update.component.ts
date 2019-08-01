@@ -53,30 +53,12 @@ export class EventAttendanceUpdateComponent implements OnInit {
       )
       .subscribe((res: IEvent[]) => (this.events = res), (res: HttpErrorResponse) => this.onError(res.message));
     this.eventUserService
-      .query({ filter: 'eventattendance-is-null' })
+      .query()
       .pipe(
         filter((mayBeOk: HttpResponse<IEventUser[]>) => mayBeOk.ok),
         map((response: HttpResponse<IEventUser[]>) => response.body)
       )
-      .subscribe(
-        (res: IEventUser[]) => {
-          if (!!this.editForm.get('eventUserId').value) {
-            this.eventusers = res;
-          } else {
-            this.eventUserService
-              .find(this.editForm.get('eventUserId').value)
-              .pipe(
-                filter((subResMayBeOk: HttpResponse<IEventUser>) => subResMayBeOk.ok),
-                map((subResponse: HttpResponse<IEventUser>) => subResponse.body)
-              )
-              .subscribe(
-                (subRes: IEventUser) => (this.eventusers = [subRes].concat(res)),
-                (subRes: HttpErrorResponse) => this.onError(subRes.message)
-              );
-          }
-        },
-        (res: HttpErrorResponse) => this.onError(res.message)
-      );
+      .subscribe((res: IEventUser[]) => (this.eventusers = res), (res: HttpErrorResponse) => this.onError(res.message));
   }
 
   updateForm(eventAttendance: IEventAttendance) {

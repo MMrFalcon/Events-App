@@ -21,7 +21,7 @@
             "relationshipName": "event"
         }
     ],
-    "changelogDate": "20190731131532",
+    "changelogDate": "20190731233157",
     "entityTableName": "event_location",
     "dto": "mapstruct",
     "pagination": "pagination",

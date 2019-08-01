@@ -26,8 +26,8 @@ public class EventAttendance implements Serializable {
     @JsonIgnoreProperties("eventAttendances")
     private Event event;
 
-    @OneToOne
-    @JoinColumn(unique = true)
+    @ManyToOne
+    @JsonIgnoreProperties("eventAttendances")
     private EventUser eventUser;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove

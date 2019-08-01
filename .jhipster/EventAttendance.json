@@ -14,15 +14,13 @@
             "otherEntityField": "id"
         },
         {
-            "relationshipType": "one-to-one",
-            "otherEntityName": "eventUser",
-            "otherEntityRelationshipName": "eventAttendance",
             "relationshipName": "eventUser",
-            "otherEntityField": "id",
-            "ownerSide": true
+            "otherEntityName": "eventUser",
+            "relationshipType": "many-to-one",
+            "otherEntityField": "id"
         }
     ],
-    "changelogDate": "20190731131534",
+    "changelogDate": "20190731233159",
     "entityTableName": "event_attendance",
     "dto": "mapstruct",
     "pagination": "infinite-scroll",
