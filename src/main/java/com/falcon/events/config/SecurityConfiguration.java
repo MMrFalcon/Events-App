@@ -1,12 +1,10 @@
 package com.falcon.events.config;
 
-import com.falcon.events.security.*;
-
+import com.falcon.events.security.AuthoritiesConstants;
+import com.falcon.events.security.EventAjaxAuthenticationFailureHandler;
 import io.github.jhipster.config.JHipsterProperties;
-import io.github.jhipster.security.*;
-
-import org.springframework.beans.factory.BeanInitializationException;
-import org.springframework.beans.factory.InitializingBean;
+import io.github.jhipster.security.AjaxAuthenticationSuccessHandler;
+import io.github.jhipster.security.AjaxLogoutSuccessHandler;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.HttpMethod;
@@ -49,8 +47,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     }
 
     @Bean
-    public AjaxAuthenticationFailureHandler ajaxAuthenticationFailureHandler() {
-        return new AjaxAuthenticationFailureHandler();
+    public EventAjaxAuthenticationFailureHandler ajaxAuthenticationFailureHandler() {
+        return new EventAjaxAuthenticationFailureHandler();
     }
 
     @Bean

@@ -5,6 +5,7 @@ import com.falcon.events.repository.UserRepository;
 import org.hibernate.validator.internal.constraintvalidators.hv.EmailValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.authentication.LockedException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -13,7 +14,9 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.*;
+import javax.servlet.http.HttpServletRequest;
+import java.util.List;
+import java.util.Locale;
 import java.util.stream.Collectors;
 
 /**
@@ -25,15 +28,27 @@ public class DomainUserDetailsService implements UserDetailsService {
     private final Logger log = LoggerFactory.getLogger(DomainUserDetailsService.class);
 
     private final UserRepository userRepository;
+    private final HttpServletRequest httpServletRequest;
+    private final LoginAttemptService loginAttemptService;
 
-    public DomainUserDetailsService(UserRepository userRepository) {
+
+    public DomainUserDetailsService(UserRepository userRepository, HttpServletRequest httpServletRequest,
+                                    LoginAttemptService loginAttemptService) {
+
         this.userRepository = userRepository;
+        this.httpServletRequest = httpServletRequest;
+        this.loginAttemptService = loginAttemptService;
     }
 
     @Override
     @Transactional
     public UserDetails loadUserByUsername(final String login) {
+        String ipAddress = getClientIp();
         log.debug("Authenticating {}", login);
+
+        if( loginAttemptService.isBlocked(ipAddress) ) {
+            throw new LockedException("blocked");
+        }
 
         if (new EmailValidator().isValid(login, null)) {
             return userRepository.findOneWithAuthoritiesByEmail(login)
@@ -46,6 +61,14 @@ public class DomainUserDetailsService implements UserDetailsService {
             .map(user -> createSpringSecurityUser(lowercaseLogin, user))
             .orElseThrow(() -> new UsernameNotFoundException("User " + lowercaseLogin + " was not found in the database"));
 
+    }
+
+    private String getClientIp() {
+        String xfHeader = httpServletRequest.getHeader("X-Forwarded-For");
+        if (xfHeader == null){
+            return httpServletRequest.getRemoteAddr();
+        }
+        return xfHeader.split(",")[0];
     }
 
     private org.springframework.security.core.userdetails.User createSpringSecurityUser(String lowercaseLogin, User user) {
