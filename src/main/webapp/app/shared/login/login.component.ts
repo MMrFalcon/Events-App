@@ -1,5 +1,5 @@
-import { Component, AfterViewInit, Renderer, ElementRef } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AfterViewInit, Component, ElementRef, Renderer } from '@angular/core';
+import { FormBuilder } from '@angular/forms';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { Router } from '@angular/router';
 import { JhiEventManager } from 'ng-jhipster';
@@ -13,6 +13,7 @@ import { StateStorageService } from 'app/core/auth/state-storage.service';
 })
 export class JhiLoginModalComponent implements AfterViewInit {
   authenticationError: boolean;
+  authenticationErrorMessage: string;
 
   loginForm = this.fb.group({
     username: [''],
@@ -71,8 +72,9 @@ export class JhiLoginModalComponent implements AfterViewInit {
           this.router.navigateByUrl(redirect);
         }
       })
-      .catch(() => {
+      .catch(error => {
         this.authenticationError = true;
+        this.authenticationErrorMessage = error.error.message;
       });
   }
 
