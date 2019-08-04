@@ -36,7 +36,7 @@ export const eventRoute: Routes = [
       pagingParams: JhiResolvePagingParams
     },
     data: {
-      authorities: ['ROLE_USER'],
+      authorities: ['ROLE_ORGANIZER', 'ROLE_ADMIN'],
       defaultSort: 'id,asc',
       pageTitle: 'Events'
     },
@@ -49,7 +49,7 @@ export const eventRoute: Routes = [
       event: EventResolve
     },
     data: {
-      authorities: ['ROLE_USER'],
+      authorities: ['ROLE_ORGANIZER', 'ROLE_ADMIN'],
       pageTitle: 'Events'
     },
     canActivate: [UserRouteAccessService]
@@ -61,7 +61,7 @@ export const eventRoute: Routes = [
       event: EventResolve
     },
     data: {
-      authorities: ['ROLE_USER'],
+      authorities: ['ROLE_ORGANIZER', 'ROLE_ADMIN'],
       pageTitle: 'Events'
     },
     canActivate: [UserRouteAccessService]
@@ -73,7 +73,7 @@ export const eventRoute: Routes = [
       event: EventResolve
     },
     data: {
-      authorities: ['ROLE_USER'],
+      authorities: ['ROLE_ORGANIZER', 'ROLE_ADMIN'],
       pageTitle: 'Events'
     },
     canActivate: [UserRouteAccessService]
@@ -88,7 +88,7 @@ export const eventPopupRoute: Routes = [
       event: EventResolve
     },
     data: {
-      authorities: ['ROLE_USER'],
+      authorities: ['ROLE_ORGANIZER', 'ROLE_ADMIN'],
       pageTitle: 'Events'
     },
     canActivate: [UserRouteAccessService],

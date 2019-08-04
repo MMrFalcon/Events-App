@@ -32,7 +32,7 @@ export const eventUserRoute: Routes = [
     path: '',
     component: EventUserComponent,
     data: {
-      authorities: ['ROLE_USER'],
+      authorities: ['ROLE_ADMIN'],
       pageTitle: 'EventUsers'
     },
     canActivate: [UserRouteAccessService]
@@ -44,7 +44,7 @@ export const eventUserRoute: Routes = [
       eventUser: EventUserResolve
     },
     data: {
-      authorities: ['ROLE_USER'],
+      authorities: ['ROLE_ADMIN'],
       pageTitle: 'EventUsers'
     },
     canActivate: [UserRouteAccessService]
@@ -56,7 +56,7 @@ export const eventUserRoute: Routes = [
       eventUser: EventUserResolve
     },
     data: {
-      authorities: ['ROLE_USER'],
+      authorities: ['ROLE_ADMIN'],
       pageTitle: 'EventUsers'
     },
     canActivate: [UserRouteAccessService]
@@ -68,7 +68,7 @@ export const eventUserRoute: Routes = [
       eventUser: EventUserResolve
     },
     data: {
-      authorities: ['ROLE_USER'],
+      authorities: ['ROLE_ADMIN'],
       pageTitle: 'EventUsers'
     },
     canActivate: [UserRouteAccessService]
@@ -83,7 +83,7 @@ export const eventUserPopupRoute: Routes = [
       eventUser: EventUserResolve
     },
     data: {
-      authorities: ['ROLE_USER'],
+      authorities: ['ROLE_ADMIN'],
       pageTitle: 'EventUsers'
     },
     canActivate: [UserRouteAccessService],

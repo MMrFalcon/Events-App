@@ -10,8 +10,9 @@ import com.falcon.events.security.AuthoritiesConstants;
 import com.falcon.events.security.SecurityUtils;
 import com.falcon.events.service.dto.UserDTO;
 import com.falcon.events.service.util.RandomUtil;
-import com.falcon.events.web.rest.errors.*;
-
+import com.falcon.events.web.rest.errors.EmailAlreadyUsedException;
+import com.falcon.events.web.rest.errors.InvalidPasswordException;
+import com.falcon.events.web.rest.errors.LoginAlreadyUsedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.cache.CacheManager;
@@ -22,8 +23,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDate;
 import java.time.Instant;
+import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -120,7 +121,7 @@ public class UserService {
         // new user gets registration key
         newUser.setActivationKey(RandomUtil.generateActivationKey());
         Set<Authority> authorities = new HashSet<>();
-        authorityRepository.findById(AuthoritiesConstants.USER).ifPresent(authorities::add);
+        authorityRepository.findById(AuthoritiesConstants.MEMBER).ifPresent(authorities::add);
         newUser.setAuthorities(authorities);
         userRepository.save(newUser);
         this.clearUserCaches(newUser);
