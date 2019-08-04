@@ -1,7 +1,6 @@
 <nav class="navbar navbar-dark navbar-expand-md bg-dark">
     <a class="navbar-brand logo" routerLink="/" (click)="collapseNavbar()">
-        <span class="logo-img"></span>
-        <span class="navbar-title">Events</span> <span class="navbar-version">{{version}}</span>
+        <span class="navbar-title">Events</span>
     </a>
     <a class="navbar-toggler d-lg-none" href="javascript:void(0);" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation" (click)="toggleNavbar()">
         <fa-icon icon="bars"></fa-icon>
@@ -22,7 +21,7 @@
                     <span>
                         <fa-icon icon="th-list"></fa-icon>
                         <span>
-                            Entities
+                            Events Managements
                         </span>
                     </span>
                 </a>
@@ -30,25 +29,25 @@
                     <li>
                         <a class="dropdown-item" routerLink="event-location" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
                             <fa-icon icon="asterisk" fixedWidth="true"></fa-icon>
-                            <span>Event Location</span>
+                            <span>Events Locations</span>
                         </a>
                     </li>
                     <li>
                         <a class="dropdown-item" routerLink="event" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
                             <fa-icon icon="asterisk" fixedWidth="true"></fa-icon>
-                            <span>Event</span>
+                            <span>Events</span>
                         </a>
                     </li>
                     <li>
                         <a class="dropdown-item" routerLink="event-attendance" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
                             <fa-icon icon="asterisk" fixedWidth="true"></fa-icon>
-                            <span>Event Attendance</span>
+                            <span>Events Attendance</span>
                         </a>
                     </li>
                     <li>
                         <a class="dropdown-item" routerLink="event-user" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
                             <fa-icon icon="asterisk" fixedWidth="true"></fa-icon>
-                            <span>Event User</span>
+                            <span>Events Members</span>
                         </a>
                     </li>
                     <!-- jhipster-needle-add-entity-to-menu - JHipster will add entities to the menu here -->
