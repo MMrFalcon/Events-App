@@ -14,9 +14,9 @@ public class EventAttendanceDTO implements Serializable {
     private LocalDate attendanceDate;
 
 
-    private Long eventId;
+    private EventDTO eventDTO;
 
-    private Long eventUserId;
+    private EventUserDTO eventUserDTO;
 
     public Long getId() {
         return id;
@@ -34,20 +34,20 @@ public class EventAttendanceDTO implements Serializable {
         this.attendanceDate = attendanceDate;
     }
 
-    public Long getEventId() {
-        return eventId;
+    public EventDTO getEventDTO() {
+        return eventDTO;
     }
 
-    public void setEventId(Long eventId) {
-        this.eventId = eventId;
+    public void setEventDTO(EventDTO eventDTO) {
+        this.eventDTO = eventDTO;
     }
 
-    public Long getEventUserId() {
-        return eventUserId;
+    public EventUserDTO getEventUserDTO() {
+        return eventUserDTO;
     }
 
-    public void setEventUserId(Long eventUserId) {
-        this.eventUserId = eventUserId;
+    public void setEventUserDTO(EventUserDTO eventUserDTO) {
+        this.eventUserDTO = eventUserDTO;
     }
 
     @Override
@@ -76,8 +76,8 @@ public class EventAttendanceDTO implements Serializable {
         return "EventAttendanceDTO{" +
             "id=" + getId() +
             ", attendanceDate='" + getAttendanceDate() + "'" +
-            ", event=" + getEventId() +
-            ", eventUser=" + getEventUserId() +
+            ", event=" + getEventDTO() +
+            ", eventUser=" + getEventUserDTO() +
             "}";
     }
 }

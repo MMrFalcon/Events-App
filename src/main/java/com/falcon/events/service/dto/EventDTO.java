@@ -18,7 +18,7 @@ public class EventDTO implements Serializable {
     private String eventCode;
 
 
-    private Long eventLocationId;
+    private EventLocationDTO eventLocationDTO;
 
     public Long getId() {
         return id;
@@ -44,12 +44,12 @@ public class EventDTO implements Serializable {
         this.eventCode = eventCode;
     }
 
-    public Long getEventLocationId() {
-        return eventLocationId;
+    public EventLocationDTO getEventLocationDTO() {
+        return eventLocationDTO;
     }
 
-    public void setEventLocationId(Long eventLocationId) {
-        this.eventLocationId = eventLocationId;
+    public void setEventLocationDTO(EventLocationDTO eventLocationDTO) {
+        this.eventLocationDTO = eventLocationDTO;
     }
 
     @Override
@@ -79,7 +79,7 @@ public class EventDTO implements Serializable {
             "id=" + getId() +
             ", eventDate='" + getEventDate() + "'" +
             ", eventCode='" + getEventCode() + "'" +
-            ", eventLocation=" + getEventLocationId() +
+            ", eventLocation=" + getEventLocationDTO() +
             "}";
     }
 }

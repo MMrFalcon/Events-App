@@ -27,8 +27,8 @@ export class EventAttendanceUpdateComponent implements OnInit {
   editForm = this.fb.group({
     id: [],
     attendanceDate: [],
-    eventId: [],
-    eventUserId: []
+    eventDTO: [],
+    eventUser: []
   });
 
   constructor(
@@ -65,8 +65,8 @@ export class EventAttendanceUpdateComponent implements OnInit {
     this.editForm.patchValue({
       id: eventAttendance.id,
       attendanceDate: eventAttendance.attendanceDate,
-      eventId: eventAttendance.eventId,
-      eventUserId: eventAttendance.eventUserId
+      eventDTO: eventAttendance.eventDTO,
+      eventUser: eventAttendance.eventUserDTO
     });
   }
 
@@ -89,8 +89,8 @@ export class EventAttendanceUpdateComponent implements OnInit {
       ...new EventAttendance(),
       id: this.editForm.get(['id']).value,
       attendanceDate: this.editForm.get(['attendanceDate']).value,
-      eventId: this.editForm.get(['eventId']).value,
-      eventUserId: this.editForm.get(['eventUserId']).value
+      eventDTO: this.editForm.get(['eventDTO']).value,
+      eventUserDTO: this.editForm.get(['eventUser']).value
     };
   }
 
@@ -111,10 +111,10 @@ export class EventAttendanceUpdateComponent implements OnInit {
   }
 
   trackEventById(index: number, item: IEvent) {
-    return item.id;
+    return item;
   }
 
   trackEventUserById(index: number, item: IEventUser) {
-    return item.id;
+    return item;
   }
 }

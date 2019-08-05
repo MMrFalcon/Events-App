@@ -17,7 +17,6 @@
         <table class="table table-striped">
             <thead>
             <tr jhiSort [(predicate)]="predicate" [(ascending)]="reverse" [callback]="reset.bind(this)">
-            <th jhiSortBy="id"><span>ID</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th jhiSortBy="attendanceDate"><span>Attendance Date</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th jhiSortBy="eventId"><span>Event</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th jhiSortBy="eventUserId"><span>Event User</span> <fa-icon [icon]="'sort'"></fa-icon></th>
@@ -26,16 +25,15 @@
             </thead>
             <tbody infinite-scroll (scrolled)="loadPage(page + 1)" [infiniteScrollDisabled]="page >= links['last']" [infiniteScrollDistance]="0">
             <tr *ngFor="let eventAttendance of eventAttendances ;trackBy: trackId">
-                <td><a [routerLink]="['/event-attendance', eventAttendance.id, 'view' ]">{{eventAttendance.id}}</a></td>
                 <td>{{eventAttendance.attendanceDate | date:'mediumDate'}}</td>
                 <td>
-                    <div *ngIf="eventAttendance.eventId">
-                        <a [routerLink]="['../event', eventAttendance.eventId , 'view' ]" >{{eventAttendance.eventId}}</a>
+                    <div *ngIf="eventAttendance.eventDTO">
+                        <a [routerLink]="['../event', eventAttendance.eventDTO.id , 'view' ]" >{{eventAttendance.eventDTO.eventLocationDTO.locationName}}</a>
                     </div>
                 </td>
                 <td>
-                    <div *ngIf="eventAttendance.eventUserId">
-                        <a [routerLink]="['../event-user', eventAttendance.eventUserId , 'view' ]" >{{eventAttendance.eventUserId}}</a>
+                    <div *ngIf="eventAttendance.eventUserDTO">
+                        <a [routerLink]="['../event-user', eventAttendance.eventUserDTO.id , 'view' ]" >{{eventAttendance.eventUserDTO.username}}</a>
                     </div>
                 </td>
                 <td class="text-right">

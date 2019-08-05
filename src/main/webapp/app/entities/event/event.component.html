@@ -30,8 +30,8 @@
                 <td>{{event.eventDate | date:'mediumDate'}}</td>
                 <td>{{event.eventCode}}</td>
                 <td>
-                    <div *ngIf="event.eventLocationId">
-                        <a [routerLink]="['../event-location', event.eventLocationId , 'view' ]" >{{event.eventLocationId}}</a>
+                    <div *ngIf="event.eventLocationDTO">
+                        <a [routerLink]="['../event-location', event.eventLocationDTO.id , 'view' ]" >{{event.eventLocationDTO.locationName}}</a>
                     </div>
                 </td>
                 <td class="text-right">
