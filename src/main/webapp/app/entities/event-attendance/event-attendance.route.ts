@@ -32,7 +32,7 @@ export const eventAttendanceRoute: Routes = [
     path: '',
     component: EventAttendanceComponent,
     data: {
-      authorities: ['ROLE_USER'],
+      authorities: ['ROLE_ADMIN'],
       pageTitle: 'EventAttendances'
     },
     canActivate: [UserRouteAccessService]
@@ -44,7 +44,7 @@ export const eventAttendanceRoute: Routes = [
       eventAttendance: EventAttendanceResolve
     },
     data: {
-      authorities: ['ROLE_USER'],
+      authorities: ['ROLE_ADMIN'],
       pageTitle: 'EventAttendances'
     },
     canActivate: [UserRouteAccessService]
@@ -56,7 +56,7 @@ export const eventAttendanceRoute: Routes = [
       eventAttendance: EventAttendanceResolve
     },
     data: {
-      authorities: ['ROLE_USER'],
+      authorities: ['ROLE_ADMIN'],
       pageTitle: 'EventAttendances'
     },
     canActivate: [UserRouteAccessService]
@@ -68,7 +68,7 @@ export const eventAttendanceRoute: Routes = [
       eventAttendance: EventAttendanceResolve
     },
     data: {
-      authorities: ['ROLE_USER'],
+      authorities: ['ROLE_ADMIN'],
       pageTitle: 'EventAttendances'
     },
     canActivate: [UserRouteAccessService]
@@ -83,7 +83,7 @@ export const eventAttendancePopupRoute: Routes = [
       eventAttendance: EventAttendanceResolve
     },
     data: {
-      authorities: ['ROLE_USER'],
+      authorities: ['ROLE_ADMIN'],
       pageTitle: 'EventAttendances'
     },
     canActivate: [UserRouteAccessService],

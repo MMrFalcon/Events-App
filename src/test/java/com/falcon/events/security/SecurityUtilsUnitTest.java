@@ -51,11 +51,11 @@ public class SecurityUtilsUnitTest {
     public void testIsCurrentUserInRole() {
         SecurityContext securityContext = SecurityContextHolder.createEmptyContext();
         Collection<GrantedAuthority> authorities = new ArrayList<>();
-        authorities.add(new SimpleGrantedAuthority(AuthoritiesConstants.USER));
+        authorities.add(new SimpleGrantedAuthority(AuthoritiesConstants.MEMBER));
         securityContext.setAuthentication(new UsernamePasswordAuthenticationToken("user", "user", authorities));
         SecurityContextHolder.setContext(securityContext);
 
-        assertThat(SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.USER)).isTrue();
+        assertThat(SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.MEMBER)).isTrue();
         assertThat(SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.ADMIN)).isFalse();
     }
 

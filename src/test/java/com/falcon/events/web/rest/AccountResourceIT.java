@@ -17,7 +17,6 @@ import com.falcon.events.web.rest.errors.ExceptionTranslator;
 import com.falcon.events.web.rest.vm.KeyAndPasswordVM;
 import com.falcon.events.web.rest.vm.ManagedUserVM;
 import org.apache.commons.lang3.RandomStringUtils;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -34,7 +33,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Instant;
 import java.time.LocalDate;
-import java.util.*;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Optional;
+import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
@@ -169,7 +171,7 @@ public class AccountResourceIT {
         validUser.setEmail("test-register-valid@example.com");
         validUser.setImageUrl("http://placehold.it/50x50");
         validUser.setLangKey(Constants.DEFAULT_LANGUAGE);
-        validUser.setAuthorities(Collections.singleton(AuthoritiesConstants.USER));
+        validUser.setAuthorities(Collections.singleton(AuthoritiesConstants.MEMBER));
         assertThat(userRepository.findOneByLogin("test-register-valid").isPresent()).isFalse();
 
         restMvc.perform(
@@ -193,7 +195,7 @@ public class AccountResourceIT {
         invalidUser.setActivated(true);
         invalidUser.setImageUrl("http://placehold.it/50x50");
         invalidUser.setLangKey(Constants.DEFAULT_LANGUAGE);
-        invalidUser.setAuthorities(Collections.singleton(AuthoritiesConstants.USER));
+        invalidUser.setAuthorities(Collections.singleton(AuthoritiesConstants.MEMBER));
 
         restUserMockMvc.perform(
             post("/api/register")
@@ -217,7 +219,7 @@ public class AccountResourceIT {
         invalidUser.setActivated(true);
         invalidUser.setImageUrl("http://placehold.it/50x50");
         invalidUser.setLangKey(Constants.DEFAULT_LANGUAGE);
-        invalidUser.setAuthorities(Collections.singleton(AuthoritiesConstants.USER));
+        invalidUser.setAuthorities(Collections.singleton(AuthoritiesConstants.MEMBER));
 
         restUserMockMvc.perform(
             post("/api/register")
@@ -241,7 +243,7 @@ public class AccountResourceIT {
         invalidUser.setActivated(true);
         invalidUser.setImageUrl("http://placehold.it/50x50");
         invalidUser.setLangKey(Constants.DEFAULT_LANGUAGE);
-        invalidUser.setAuthorities(Collections.singleton(AuthoritiesConstants.USER));
+        invalidUser.setAuthorities(Collections.singleton(AuthoritiesConstants.MEMBER));
 
         restUserMockMvc.perform(
             post("/api/register")
@@ -265,7 +267,7 @@ public class AccountResourceIT {
         invalidUser.setActivated(true);
         invalidUser.setImageUrl("http://placehold.it/50x50");
         invalidUser.setLangKey(Constants.DEFAULT_LANGUAGE);
-        invalidUser.setAuthorities(Collections.singleton(AuthoritiesConstants.USER));
+        invalidUser.setAuthorities(Collections.singleton(AuthoritiesConstants.MEMBER));
 
         restUserMockMvc.perform(
             post("/api/register")
@@ -289,7 +291,7 @@ public class AccountResourceIT {
         firstUser.setEmail("alice@example.com");
         firstUser.setImageUrl("http://placehold.it/50x50");
         firstUser.setLangKey(Constants.DEFAULT_LANGUAGE);
-        firstUser.setAuthorities(Collections.singleton(AuthoritiesConstants.USER));
+        firstUser.setAuthorities(Collections.singleton(AuthoritiesConstants.MEMBER));
 
         // Duplicate login, different email
         ManagedUserVM secondUser = new ManagedUserVM();
@@ -345,7 +347,7 @@ public class AccountResourceIT {
         firstUser.setEmail("test-register-duplicate-email@example.com");
         firstUser.setImageUrl("http://placehold.it/50x50");
         firstUser.setLangKey(Constants.DEFAULT_LANGUAGE);
-        firstUser.setAuthorities(Collections.singleton(AuthoritiesConstants.USER));
+        firstUser.setAuthorities(Collections.singleton(AuthoritiesConstants.MEMBER));
 
         // Register first user
         restMvc.perform(
@@ -438,7 +440,7 @@ public class AccountResourceIT {
         Optional<User> userDup = userRepository.findOneByLogin("badguy");
         assertThat(userDup.isPresent()).isTrue();
         assertThat(userDup.get().getAuthorities()).hasSize(1)
-            .containsExactly(authorityRepository.findById(AuthoritiesConstants.USER).get());
+            .containsExactly(authorityRepository.findById(AuthoritiesConstants.MEMBER).get());
     }
 
     @Test
