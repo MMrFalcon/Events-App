@@ -61,7 +61,8 @@ spring:
     contexts: dev, faker
   mail:
     host: localhost
-    port: 25
+    #Run with MailDev https://github.com/djfarrelly/MailDev
+    port: 1025
     username:
     password:
   messages:
