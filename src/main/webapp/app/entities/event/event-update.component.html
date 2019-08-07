@@ -32,9 +32,9 @@
 
                 <div class="form-group">
                     <label class="form-control-label" for="field_eventLocation">Event Location</label>
-                    <select class="form-control" id="field_eventLocation" name="eventLocation" formControlName="eventLocationId">
+                    <select class="form-control" id="field_eventLocation" name="eventLocation" formControlName="eventLocationName">
                         <option [ngValue]="null"></option>
-                        <option [ngValue]="eventLocationOption.id" *ngFor="let eventLocationOption of eventlocations; trackBy: trackEventLocationById">{{eventLocationOption.id}}</option>
+                        <option [ngValue]="eventLocationOption.id" *ngFor="let eventLocationOption of eventlocations; trackBy: trackEventLocationById">{{eventLocationOption.locationName}}</option>
                     </select>
                 </div>
             </div>

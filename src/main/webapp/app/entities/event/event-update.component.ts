@@ -24,7 +24,7 @@ export class EventUpdateComponent implements OnInit {
     id: [],
     eventDate: [null, [Validators.required]],
     eventCode: [],
-    eventLocationId: []
+    eventLocation: []
   });
 
   constructor(
@@ -54,7 +54,7 @@ export class EventUpdateComponent implements OnInit {
       id: event.id,
       eventDate: event.eventDate,
       eventCode: event.eventCode,
-      eventLocationId: event.eventLocationId
+      eventLocation: event.eventLocationDTO
     });
   }
 
@@ -78,7 +78,7 @@ export class EventUpdateComponent implements OnInit {
       id: this.editForm.get(['id']).value,
       eventDate: this.editForm.get(['eventDate']).value,
       eventCode: this.editForm.get(['eventCode']).value,
-      eventLocationId: this.editForm.get(['eventLocationId']).value
+      eventLocationDTO: this.editForm.get(['eventLocation']).value
     };
   }
 
@@ -99,6 +99,6 @@ export class EventUpdateComponent implements OnInit {
   }
 
   trackEventLocationById(index: number, item: IEventLocation) {
-    return item.id;
+    return item;
   }
 }

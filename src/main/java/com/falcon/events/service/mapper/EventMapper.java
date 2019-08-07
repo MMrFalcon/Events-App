@@ -11,10 +11,10 @@ import org.mapstruct.Mapping;
 @Mapper(componentModel = "spring", uses = {EventLocationMapper.class})
 public interface EventMapper extends EntityMapper<EventDTO, Event> {
 
-    @Mapping(source = "eventLocation.id", target = "eventLocationId")
+    @Mapping(source = "eventLocation", target = "eventLocationDTO")
     EventDTO toDto(Event event);
 
-    @Mapping(source = "eventLocationId", target = "eventLocation")
+    @Mapping(source = "eventLocationDTO", target = "eventLocation")
     @Mapping(target = "eventAttendances", ignore = true)
     @Mapping(target = "removeEventAttendance", ignore = true)
     Event toEntity(EventDTO eventDTO);
