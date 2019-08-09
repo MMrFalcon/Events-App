@@ -8,15 +8,15 @@ import org.mapstruct.Mapping;
 /**
  * Mapper for the entity {@link EventAttendance} and its DTO {@link EventAttendanceDTO}.
  */
-@Mapper(componentModel = "spring", uses = {EventMapper.class, EventUserMapper.class})
+@Mapper(componentModel = "spring", uses = {EventMapper.class, UserMapper.class})
 public interface EventAttendanceMapper extends EntityMapper<EventAttendanceDTO, EventAttendance> {
 
     @Mapping(source = "event", target = "eventDTO")
-    @Mapping(source = "eventUser", target = "eventUserDTO")
+    @Mapping(source = "user", target = "userDTO")
     EventAttendanceDTO toDto(EventAttendance eventAttendance);
 
     @Mapping(source = "eventDTO", target = "event")
-    @Mapping(source = "eventUserDTO", target = "eventUser")
+    @Mapping(source = "userDTO", target = "user")
     EventAttendance toEntity(EventAttendanceDTO eventAttendanceDTO);
 
     default EventAttendance fromId(Long id) {

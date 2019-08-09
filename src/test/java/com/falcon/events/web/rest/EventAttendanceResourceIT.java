@@ -3,6 +3,7 @@ package com.falcon.events.web.rest;
 import com.falcon.events.EventsApp;
 import com.falcon.events.domain.EventAttendance;
 import com.falcon.events.repository.EventAttendanceRepository;
+import com.falcon.events.repository.UserRepository;
 import com.falcon.events.service.EventAttendanceService;
 import com.falcon.events.service.dto.EventAttendanceDTO;
 import com.falcon.events.service.mapper.EventAttendanceMapper;
@@ -64,6 +65,9 @@ public class EventAttendanceResourceIT {
     @Autowired
     private Validator validator;
 
+    @Autowired
+    private UserRepository userRepository;
+
     private MockMvc restEventAttendanceMockMvc;
 
     private EventAttendance eventAttendance;
@@ -112,6 +116,7 @@ public class EventAttendanceResourceIT {
     @Transactional
     public void createEventAttendance() throws Exception {
         int databaseSizeBeforeCreate = eventAttendanceRepository.findAll().size();
+        eventAttendance.setUser(userRepository.getOne(1L));
 
         // Create the EventAttendance
         EventAttendanceDTO eventAttendanceDTO = eventAttendanceMapper.toDto(eventAttendance);
@@ -133,6 +138,7 @@ public class EventAttendanceResourceIT {
         int databaseSizeBeforeCreate = eventAttendanceRepository.findAll().size();
 
         // Create the EventAttendance with an existing ID
+        eventAttendance.setUser(userRepository.getOne(1L));
         eventAttendance.setId(1L);
         EventAttendanceDTO eventAttendanceDTO = eventAttendanceMapper.toDto(eventAttendance);
 
@@ -152,6 +158,7 @@ public class EventAttendanceResourceIT {
     @Transactional
     public void getAllEventAttendances() throws Exception {
         // Initialize the database
+        eventAttendance.setUser(userRepository.getOne(1L));
         eventAttendanceRepository.saveAndFlush(eventAttendance);
 
         // Get all the eventAttendanceList
@@ -161,11 +168,12 @@ public class EventAttendanceResourceIT {
             .andExpect(jsonPath("$.[*].id").value(hasItem(eventAttendance.getId().intValue())))
             .andExpect(jsonPath("$.[*].attendanceDate").value(hasItem(DEFAULT_ATTENDANCE_DATE.toString())));
     }
-    
+
     @Test
     @Transactional
     public void getEventAttendance() throws Exception {
         // Initialize the database
+        eventAttendance.setUser(userRepository.getOne(1L));
         eventAttendanceRepository.saveAndFlush(eventAttendance);
 
         // Get the eventAttendance
@@ -188,6 +196,7 @@ public class EventAttendanceResourceIT {
     @Transactional
     public void updateEventAttendance() throws Exception {
         // Initialize the database
+        eventAttendance.setUser(userRepository.getOne(1L));
         eventAttendanceRepository.saveAndFlush(eventAttendance);
 
         int databaseSizeBeforeUpdate = eventAttendanceRepository.findAll().size();
@@ -218,6 +227,7 @@ public class EventAttendanceResourceIT {
         int databaseSizeBeforeUpdate = eventAttendanceRepository.findAll().size();
 
         // Create the EventAttendance
+        eventAttendance.setUser(userRepository.getOne(1L));
         EventAttendanceDTO eventAttendanceDTO = eventAttendanceMapper.toDto(eventAttendance);
 
         // If the entity doesn't have an ID, it will throw BadRequestAlertException

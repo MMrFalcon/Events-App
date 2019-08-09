@@ -28,7 +28,7 @@ public class EventAttendance implements Serializable {
 
     @ManyToOne
     @JsonIgnoreProperties("eventAttendances")
-    private EventUser eventUser;
+    private User user;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
@@ -65,17 +65,17 @@ public class EventAttendance implements Serializable {
         this.event = event;
     }
 
-    public EventUser getEventUser() {
-        return eventUser;
+    public User getUser() {
+        return user;
     }
 
-    public EventAttendance eventUser(EventUser eventUser) {
-        this.eventUser = eventUser;
+    public EventAttendance eventUser(User user) {
+        this.user = user;
         return this;
     }
 
-    public void setEventUser(EventUser eventUser) {
-        this.eventUser = eventUser;
+    public void setUser(User user) {
+        this.user = user;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 

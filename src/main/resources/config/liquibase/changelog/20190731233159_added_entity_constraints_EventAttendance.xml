@@ -7,18 +7,18 @@
         Added the constraints for entity EventAttendance.
     -->
     <changeSet id="20190731233159-2" author="jhipster">
-        
+
         <addForeignKeyConstraint baseColumnNames="event_id"
                                  baseTableName="event_attendance"
                                  constraintName="fk_event_attendance_event_id"
                                  referencedColumnNames="id"
                                  referencedTableName="event"/>
 
-        <addForeignKeyConstraint baseColumnNames="event_user_id"
+        <addForeignKeyConstraint baseColumnNames="user_id"
                                  baseTableName="event_attendance"
-                                 constraintName="fk_event_attendance_event_user_id"
+                                 constraintName="fk_event_attendance_jhi_user_id"
                                  referencedColumnNames="id"
-                                 referencedTableName="event_user"/>
+                                 referencedTableName="jhi_user"/>
 
     </changeSet>
 </databaseChangeLog>
