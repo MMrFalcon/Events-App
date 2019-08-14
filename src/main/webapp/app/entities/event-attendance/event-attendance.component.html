@@ -4,7 +4,7 @@
         <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-event-attendance" [routerLink]="['/event-attendance/new']">
             <fa-icon [icon]="'plus'"></fa-icon>
             <span >
-            Create new Event Attendance
+            Create a new Event Attendance
             </span>
         </button>
     </h2>
@@ -19,7 +19,7 @@
             <tr jhiSort [(predicate)]="predicate" [(ascending)]="reverse" [callback]="reset.bind(this)">
             <th jhiSortBy="attendanceDate"><span>Attendance Date</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th jhiSortBy="eventId"><span>Event</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-            <th jhiSortBy="eventUserId"><span>Event User</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="userId"><span>User</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th></th>
             </tr>
             </thead>
@@ -28,13 +28,11 @@
                 <td>{{eventAttendance.attendanceDate | date:'mediumDate'}}</td>
                 <td>
                     <div *ngIf="eventAttendance.eventDTO">
-                        <a [routerLink]="['../event', eventAttendance.eventDTO.id , 'view' ]" >{{eventAttendance.eventDTO.eventLocationDTO.locationName}}</a>
+                        <a [routerLink]="['/event', eventAttendance.eventDTO.eventCode , 'view' ]" >{{eventAttendance.eventDTO.eventCode}}</a>
                     </div>
                 </td>
                 <td>
-                    <div *ngIf="eventAttendance.eventUserDTO">
-                        <a [routerLink]="['../event-user', eventAttendance.eventUserDTO.id , 'view' ]" >{{eventAttendance.eventUserDTO.username}}</a>
-                    </div>
+                    {{eventAttendance.userDTO.login}}
                 </td>
                 <td class="text-right">
                     <div class="btn-group">
@@ -51,7 +49,7 @@
                             <span class="d-none d-md-inline">Edit</span>
                         </button>
                         <button type="submit"
-                                [routerLink]="['/', 'event-attendance', { outlets: { popup: eventAttendance.id + '/delete'} }]"
+                                [routerLink]="['/event-attendance', { outlets: { popup: eventAttendance.id + '/delete'} }]"
                                 replaceUrl="true"
                                 queryParamsHandling="merge"
                                 class="btn btn-danger btn-sm">

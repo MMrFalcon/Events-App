@@ -9,8 +9,7 @@ import { EventAttendance, IEventAttendance } from 'app/shared/model/event-attend
 import { EventAttendanceService } from './event-attendance.service';
 import { IEvent } from 'app/shared/model/event.model';
 import { EventService } from 'app/entities/event';
-import { IEventUser } from 'app/shared/model/event-user.model';
-import { EventUserService } from 'app/entities/event-user';
+import { IUser, UserService } from 'app/core';
 
 @Component({
   selector: 'jhi-event-attendance-update',
@@ -21,21 +20,21 @@ export class EventAttendanceUpdateComponent implements OnInit {
 
   events: IEvent[];
 
-  eventusers: IEventUser[];
+  users: IUser[];
   attendanceDateDp: any;
 
   editForm = this.fb.group({
     id: [],
     attendanceDate: [],
     eventDTO: [],
-    eventUser: []
+    userDTO: []
   });
 
   constructor(
     protected jhiAlertService: JhiAlertService,
     protected eventAttendanceService: EventAttendanceService,
     protected eventService: EventService,
-    protected eventUserService: EventUserService,
+    protected userService: UserService,
     protected activatedRoute: ActivatedRoute,
     private fb: FormBuilder
   ) {}
@@ -52,13 +51,13 @@ export class EventAttendanceUpdateComponent implements OnInit {
         map((response: HttpResponse<IEvent[]>) => response.body)
       )
       .subscribe((res: IEvent[]) => (this.events = res), (res: HttpErrorResponse) => this.onError(res.message));
-    this.eventUserService
+    this.userService
       .query()
       .pipe(
-        filter((mayBeOk: HttpResponse<IEventUser[]>) => mayBeOk.ok),
-        map((response: HttpResponse<IEventUser[]>) => response.body)
+        filter((mayBeOk: HttpResponse<IUser[]>) => mayBeOk.ok),
+        map((response: HttpResponse<IUser[]>) => response.body)
       )
-      .subscribe((res: IEventUser[]) => (this.eventusers = res), (res: HttpErrorResponse) => this.onError(res.message));
+      .subscribe((res: IUser[]) => (this.users = res), (res: HttpErrorResponse) => this.onError(res.message));
   }
 
   updateForm(eventAttendance: IEventAttendance) {
@@ -66,7 +65,7 @@ export class EventAttendanceUpdateComponent implements OnInit {
       id: eventAttendance.id,
       attendanceDate: eventAttendance.attendanceDate,
       eventDTO: eventAttendance.eventDTO,
-      eventUser: eventAttendance.eventUserDTO
+      userDTO: eventAttendance.userDTO
     });
   }
 
@@ -90,7 +89,7 @@ export class EventAttendanceUpdateComponent implements OnInit {
       id: this.editForm.get(['id']).value,
       attendanceDate: this.editForm.get(['attendanceDate']).value,
       eventDTO: this.editForm.get(['eventDTO']).value,
-      eventUserDTO: this.editForm.get(['eventUser']).value
+      userDTO: this.editForm.get(['userDTO']).value
     };
   }
 
@@ -114,7 +113,7 @@ export class EventAttendanceUpdateComponent implements OnInit {
     return item;
   }
 
-  trackEventUserById(index: number, item: IEventUser) {
+  trackUserById(index: number, item: IUser) {
     return item;
   }
 }

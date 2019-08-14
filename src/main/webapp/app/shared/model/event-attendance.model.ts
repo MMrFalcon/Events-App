@@ -1,14 +1,14 @@
 import { Moment } from 'moment';
 import { Event } from 'app/shared/model/event.model';
-import { EventUser } from 'app/shared/model/event-user.model';
+import { User } from 'app/core';
 
 export interface IEventAttendance {
   id?: number;
   attendanceDate?: Moment;
   eventDTO?: Event;
-  eventUserDTO?: EventUser;
+  userDTO?: User;
 }
 
 export class EventAttendance implements IEventAttendance {
-  constructor(public id?: number, public attendanceDate?: Moment, public eventDTO?: Event, public eventUserDTO?: EventUser) {}
+  constructor(public id?: number, public attendanceDate?: Moment, public eventDTO?: Event, public userDTO?: User) {}
 }

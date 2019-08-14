@@ -15,10 +15,6 @@ import { RouterModule } from '@angular/router';
       {
         path: 'event-attendance',
         loadChildren: './event-attendance/event-attendance.module#EventsEventAttendanceModule'
-      },
-      {
-        path: 'event-user',
-        loadChildren: './event-user/event-user.module#EventsEventUserModule'
       }
       /* jhipster-needle-add-entity-route - JHipster will add entity modules routes here */
     ])
