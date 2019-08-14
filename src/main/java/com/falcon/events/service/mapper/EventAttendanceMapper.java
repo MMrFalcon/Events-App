@@ -27,4 +27,5 @@ public interface EventAttendanceMapper extends EntityMapper<EventAttendanceDTO, 
         eventAttendance.setId(id);
         return eventAttendance;
     }
+
 }

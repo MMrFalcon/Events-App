@@ -69,7 +69,7 @@ public class EventAttendance implements Serializable {
         return user;
     }
 
-    public EventAttendance eventUser(User user) {
+    public EventAttendance user(User user) {
         this.user = user;
         return this;
     }

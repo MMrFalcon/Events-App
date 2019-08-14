@@ -3,7 +3,6 @@ package com.falcon.events.web.rest;
 import com.falcon.events.EventsApp;
 import com.falcon.events.domain.EventAttendance;
 import com.falcon.events.repository.EventAttendanceRepository;
-import com.falcon.events.repository.UserRepository;
 import com.falcon.events.service.EventAttendanceService;
 import com.falcon.events.service.dto.EventAttendanceDTO;
 import com.falcon.events.service.mapper.EventAttendanceMapper;
@@ -33,13 +32,14 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 /**
- * Integration tests for the {@Link EventAttendanceResource} REST controller.
+ * Integration tests for the {@link EventAttendanceResource} REST controller.
  */
 @SpringBootTest(classes = EventsApp.class)
 public class EventAttendanceResourceIT {
 
     private static final LocalDate DEFAULT_ATTENDANCE_DATE = LocalDate.ofEpochDay(0L);
     private static final LocalDate UPDATED_ATTENDANCE_DATE = LocalDate.now(ZoneId.systemDefault());
+    private static final LocalDate SMALLER_ATTENDANCE_DATE = LocalDate.ofEpochDay(-1L);
 
     @Autowired
     private EventAttendanceRepository eventAttendanceRepository;
@@ -64,9 +64,6 @@ public class EventAttendanceResourceIT {
 
     @Autowired
     private Validator validator;
-
-    @Autowired
-    private UserRepository userRepository;
 
     private MockMvc restEventAttendanceMockMvc;
 
@@ -116,7 +113,6 @@ public class EventAttendanceResourceIT {
     @Transactional
     public void createEventAttendance() throws Exception {
         int databaseSizeBeforeCreate = eventAttendanceRepository.findAll().size();
-        eventAttendance.setUser(userRepository.getOne(1L));
 
         // Create the EventAttendance
         EventAttendanceDTO eventAttendanceDTO = eventAttendanceMapper.toDto(eventAttendance);
@@ -138,7 +134,6 @@ public class EventAttendanceResourceIT {
         int databaseSizeBeforeCreate = eventAttendanceRepository.findAll().size();
 
         // Create the EventAttendance with an existing ID
-        eventAttendance.setUser(userRepository.getOne(1L));
         eventAttendance.setId(1L);
         EventAttendanceDTO eventAttendanceDTO = eventAttendanceMapper.toDto(eventAttendance);
 
@@ -158,7 +153,6 @@ public class EventAttendanceResourceIT {
     @Transactional
     public void getAllEventAttendances() throws Exception {
         // Initialize the database
-        eventAttendance.setUser(userRepository.getOne(1L));
         eventAttendanceRepository.saveAndFlush(eventAttendance);
 
         // Get all the eventAttendanceList
@@ -173,7 +167,6 @@ public class EventAttendanceResourceIT {
     @Transactional
     public void getEventAttendance() throws Exception {
         // Initialize the database
-        eventAttendance.setUser(userRepository.getOne(1L));
         eventAttendanceRepository.saveAndFlush(eventAttendance);
 
         // Get the eventAttendance
@@ -196,7 +189,6 @@ public class EventAttendanceResourceIT {
     @Transactional
     public void updateEventAttendance() throws Exception {
         // Initialize the database
-        eventAttendance.setUser(userRepository.getOne(1L));
         eventAttendanceRepository.saveAndFlush(eventAttendance);
 
         int databaseSizeBeforeUpdate = eventAttendanceRepository.findAll().size();
@@ -227,7 +219,6 @@ public class EventAttendanceResourceIT {
         int databaseSizeBeforeUpdate = eventAttendanceRepository.findAll().size();
 
         // Create the EventAttendance
-        eventAttendance.setUser(userRepository.getOne(1L));
         EventAttendanceDTO eventAttendanceDTO = eventAttendanceMapper.toDto(eventAttendance);
 
         // If the entity doesn't have an ID, it will throw BadRequestAlertException

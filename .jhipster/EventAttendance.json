@@ -14,8 +14,8 @@
             "otherEntityField": "id"
         },
         {
-            "relationshipName": "eventUser",
-            "otherEntityName": "eventUser",
+            "relationshipName": "user",
+            "otherEntityName": "user",
             "relationshipType": "many-to-one",
             "otherEntityField": "id"
         }
