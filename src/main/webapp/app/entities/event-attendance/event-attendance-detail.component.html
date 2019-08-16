@@ -1,7 +1,7 @@
 <div class="row justify-content-center">
     <div class="col-8">
         <div *ngIf="eventAttendance">
-            <h2><span>Event Attendance</span> {{eventAttendance.id}}</h2>
+            <h2><span>Event Attendance</span></h2>
             <hr>
             <jhi-alert-error></jhi-alert-error>
             <dl class="row-md jh-entity-details">
@@ -11,13 +11,15 @@
                 </dd>
                 <dt><span>Event</span></dt>
                 <dd>
-                    <div *ngIf="eventAttendance.eventId">
-                        <a [routerLink]="['/event', eventAttendance.eventId, 'view']">{{eventAttendance.eventId}}</a>
+                    <div *ngIf="eventAttendance.eventDTO">
+                        <a [routerLink]="['/event', eventAttendance.eventDTO.id, 'view']">{{eventAttendance.eventDTO.eventCode}}</a>
                     </div>
                 </dd>
                 <dt><span>User</span></dt>
                 <dd>
-                    {{eventAttendance.userId}}
+                    <div *ngIf="eventAttendance.userDTO.login">
+                        <a [routerLink]="['/admin/user-management', eventAttendance.userDTO.login, 'view']"> {{eventAttendance.userDTO.login}}</a>
+                    </div>
                 </dd>
             </dl>
 
