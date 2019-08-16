@@ -14,6 +14,7 @@ import org.springframework.stereotype.Component;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.util.Optional;
 import java.util.UUID;
 
 @Component
@@ -85,6 +86,7 @@ public class EventsBootstrap implements CommandLineRunner {
         eventMember.setHomeLocation(memberHomeLocation);
         userRepository.save(eventMember);
 
+        addMissingUserHomeLocation();
     }
 
     private void setEventAttendance(User eventUser, Event event) {
@@ -106,10 +108,26 @@ public class EventsBootstrap implements CommandLineRunner {
     }
 
     private EventLocation getEventLocation(String locationName, int dayValue) {
-        EventLocation eventLocation = new EventLocation();
-        eventLocation.setLocationName(locationName);
-        eventLocation.setEventDayOfWeek(dayValue);
-        eventLocationRepository.save(eventLocation);
-        return eventLocation;
+        Optional<EventLocation> optionalEventLocation = eventLocationRepository.findByLocationName(locationName);
+
+        if (optionalEventLocation.isPresent()) {
+            return optionalEventLocation.get();
+        } else {
+            EventLocation eventLocation = new EventLocation();
+            eventLocation.setLocationName(locationName);
+            eventLocation.setEventDayOfWeek(dayValue);
+            eventLocationRepository.save(eventLocation);
+            return eventLocation;
+        }
+    }
+
+    private void addMissingUserHomeLocation() {
+        for (User user: userRepository.findAll()) {
+            if (user.getHomeLocation() == null) {
+                EventLocation eventLocation = getEventLocation("Jungle", 2);
+                user.setHomeLocation(eventLocation);
+                userRepository.save(user);
+            }
+        }
     }
 }
