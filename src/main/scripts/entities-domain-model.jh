@@ -12,18 +12,15 @@ entity EventAttendance {
 	attendanceDate LocalDate
 }
 
-entity EventUser {
-	username String
-}
 
 relationship OneToMany {
 	EventLocation{event} to Event
     Event{eventAttendance} to EventAttendance
-    EventUser{eventAttendance} to EventAttendance
+    User{eventAttendance} to EventAttendance
 }
 
 relationship OneToOne {
-    EventUser{homeLocation} to EventLocation
+    User{homeLocation} to EventLocation
 }
 
 dto * with mapstruct

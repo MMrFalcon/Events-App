@@ -1,10 +1,11 @@
 <div>
     <h2 id="page-heading">
         <span>Event Attendances</span>
-        <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-event-attendance" [routerLink]="['/event-attendance/new']">
+        <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-event-attendance"
+                [routerLink]="['/event-attendance/new']">
             <fa-icon [icon]="'plus'"></fa-icon>
-            <span >
-            Create new Event Attendance
+            <span>
+            Create a new Event Attendance
             </span>
         </button>
     </h2>
@@ -17,23 +18,30 @@
         <table class="table table-striped">
             <thead>
             <tr jhiSort [(predicate)]="predicate" [(ascending)]="reverse" [callback]="reset.bind(this)">
-            <th jhiSortBy="attendanceDate"><span>Attendance Date</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-            <th jhiSortBy="eventId"><span>Event</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-            <th jhiSortBy="eventUserId"><span>Event User</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-            <th></th>
+                <th jhiSortBy="attendanceDate"><span>Attendance Date</span>
+                    <fa-icon [icon]="'sort'"></fa-icon>
+                </th>
+                <th jhiSortBy="eventId"><span>Event</span>
+                    <fa-icon [icon]="'sort'"></fa-icon>
+                </th>
+                <th jhiSortBy="userId"><span>User</span>
+                    <fa-icon [icon]="'sort'"></fa-icon>
+                </th>
+                <th></th>
             </tr>
             </thead>
-            <tbody infinite-scroll (scrolled)="loadPage(page + 1)" [infiniteScrollDisabled]="page >= links['last']" [infiniteScrollDistance]="0">
+            <tbody infinite-scroll (scrolled)="loadPage(page + 1)" [infiniteScrollDisabled]="page >= links['last']"
+                   [infiniteScrollDistance]="0">
             <tr *ngFor="let eventAttendance of eventAttendances ;trackBy: trackId">
                 <td>{{eventAttendance.attendanceDate | date:'mediumDate'}}</td>
                 <td>
                     <div *ngIf="eventAttendance.eventDTO">
-                        <a [routerLink]="['../event', eventAttendance.eventDTO.id , 'view' ]" >{{eventAttendance.eventDTO.eventLocationDTO.locationName}}</a>
+                        <a [routerLink]="['/event', eventAttendance.eventDTO.id , 'view' ]">{{eventAttendance.eventDTO.eventCode}}</a>
                     </div>
                 </td>
                 <td>
-                    <div *ngIf="eventAttendance.eventUserDTO">
-                        <a [routerLink]="['../event-user', eventAttendance.eventUserDTO.id , 'view' ]" >{{eventAttendance.eventUserDTO.username}}</a>
+                    <div *ngIf="eventAttendance.userDTO.login">
+                        <a [routerLink]="['/admin/user-management', eventAttendance.userDTO.login, 'view']"> {{eventAttendance.userDTO.login}}</a>
                     </div>
                 </td>
                 <td class="text-right">
@@ -51,7 +59,7 @@
                             <span class="d-none d-md-inline">Edit</span>
                         </button>
                         <button type="submit"
-                                [routerLink]="['/', 'event-attendance', { outlets: { popup: eventAttendance.id + '/delete'} }]"
+                                [routerLink]="['/event-attendance', { outlets: { popup: eventAttendance.id + '/delete'} }]"
                                 replaceUrl="true"
                                 queryParamsHandling="merge"
                                 class="btn btn-danger btn-sm">

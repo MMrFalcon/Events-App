@@ -11,14 +11,14 @@
                 </dd>
                 <dt><span>Event</span></dt>
                 <dd>
-                    <div *ngIf="eventAttendance.eventDTO.eventCode">
+                    <div *ngIf="eventAttendance.eventDTO">
                         <a [routerLink]="['/event', eventAttendance.eventDTO.id, 'view']">{{eventAttendance.eventDTO.eventCode}}</a>
                     </div>
                 </dd>
-                <dt><span>Event Member</span></dt>
+                <dt><span>User</span></dt>
                 <dd>
-                    <div *ngIf="eventAttendance.eventUserDTO">
-                        <a [routerLink]="['/event-user', eventAttendance.eventUserDTO.id, 'view']">{{eventAttendance.eventUserDTO.username}}</a>
+                    <div *ngIf="eventAttendance.userDTO.login">
+                        <a [routerLink]="['/admin/user-management', eventAttendance.userDTO.login, 'view']"> {{eventAttendance.userDTO.login}}</a>
                     </div>
                 </dd>
             </dl>

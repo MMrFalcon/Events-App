@@ -1,10 +1,11 @@
 package com.falcon.events.domain;
 
 import com.falcon.events.config.Constants;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.annotations.BatchSize;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
@@ -93,6 +94,31 @@ public class User extends AbstractAuditingEntity implements Serializable {
     @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "user")
     private Set<PersistentToken> persistentTokens = new HashSet<>();
+
+    @ManyToOne
+    @JoinColumn(name = "event_location_id")
+    private EventLocation homeLocation;
+
+    @OneToMany(mappedBy = "user")
+    @JsonIgnore
+    @Cache(usage =  CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    private Set<EventAttendance> eventAttendances = new HashSet<>();
+
+    public EventLocation getHomeLocation() {
+        return homeLocation;
+    }
+
+    public void setHomeLocation(EventLocation homeLocation) {
+        this.homeLocation = homeLocation;
+    }
+
+    public Set<EventAttendance> getEventAttendances() {
+        return eventAttendances;
+    }
+
+    public void setEventAttendances(Set<EventAttendance> eventAttendances) {
+        this.eventAttendances = eventAttendances;
+    }
 
     public Long getId() {
         return id;

@@ -32,13 +32,14 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 /**
- * Integration tests for the {@Link EventAttendanceResource} REST controller.
+ * Integration tests for the {@link EventAttendanceResource} REST controller.
  */
 @SpringBootTest(classes = EventsApp.class)
 public class EventAttendanceResourceIT {
 
     private static final LocalDate DEFAULT_ATTENDANCE_DATE = LocalDate.ofEpochDay(0L);
     private static final LocalDate UPDATED_ATTENDANCE_DATE = LocalDate.now(ZoneId.systemDefault());
+    private static final LocalDate SMALLER_ATTENDANCE_DATE = LocalDate.ofEpochDay(-1L);
 
     @Autowired
     private EventAttendanceRepository eventAttendanceRepository;
@@ -161,7 +162,7 @@ public class EventAttendanceResourceIT {
             .andExpect(jsonPath("$.[*].id").value(hasItem(eventAttendance.getId().intValue())))
             .andExpect(jsonPath("$.[*].attendanceDate").value(hasItem(DEFAULT_ATTENDANCE_DATE.toString())));
     }
-    
+
     @Test
     @Transactional
     public void getEventAttendance() throws Exception {

@@ -3,14 +3,13 @@ package com.falcon.events.bootstrap;
 import com.falcon.events.domain.Event;
 import com.falcon.events.domain.EventAttendance;
 import com.falcon.events.domain.EventLocation;
-import com.falcon.events.domain.EventUser;
-import com.falcon.events.repository.EventAttendanceRepository;
-import com.falcon.events.repository.EventLocationRepository;
-import com.falcon.events.repository.EventRepository;
-import com.falcon.events.repository.EventUserRepository;
+import com.falcon.events.domain.User;
+import com.falcon.events.repository.*;
+import com.falcon.events.security.AuthoritiesConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.time.DayOfWeek;
@@ -25,15 +24,20 @@ public class EventsBootstrap implements CommandLineRunner {
     private final EventLocationRepository eventLocationRepository;
     private final EventRepository eventRepository;
     private final EventAttendanceRepository eventAttendanceRepository;
-    private final EventUserRepository eventUserRepository;
+    private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
+    private final AuthorityRepository authorityRepository;
 
     public EventsBootstrap(EventLocationRepository eventLocationRepository, EventRepository eventRepository,
-                           EventAttendanceRepository eventAttendanceRepository, EventUserRepository eventUserRepository) {
+                           EventAttendanceRepository eventAttendanceRepository, UserRepository userRepository,
+                           PasswordEncoder passwordEncoder, AuthorityRepository authorityRepository) {
 
         this.eventLocationRepository = eventLocationRepository;
         this.eventRepository = eventRepository;
         this.eventAttendanceRepository = eventAttendanceRepository;
-        this.eventUserRepository = eventUserRepository;
+        this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
+        this.authorityRepository = authorityRepository;
     }
 
     @Override
@@ -48,23 +52,46 @@ public class EventsBootstrap implements CommandLineRunner {
     }
 
     private void initData() {
-        EventUser eventUser = new EventUser();
-        eventUser.setUsername("Geralt");
+        User eventUser = new User();
+        eventUser.setFirstName("Geralt");
+        eventUser.setLastName("of Rivia");
+        eventUser.setLogin("Geralt");
+        eventUser.setPassword(passwordEncoder.encode("user"));
+        eventUser.setEmail("mail@mail.com");
+        eventUser.getAuthorities().add(authorityRepository.findByName(AuthoritiesConstants.ORGANIZER)
+            .orElseThrow(RuntimeException::new));
+        eventUser.getAuthorities().add(authorityRepository.findByName(AuthoritiesConstants.MEMBER)
+            .orElseThrow(RuntimeException::new));
+        eventUser.setActivated(true);
         EventLocation userHomeLocation = getEventLocation("Port Tavern", DayOfWeek.FRIDAY.getValue());
         eventUser.setHomeLocation(userHomeLocation);
-        eventUserRepository.save(eventUser);
+        userRepository.save(eventUser);
 
         EventLocation aleEventLocation = getEventLocation("St Pete - Yard of Ale", DayOfWeek.SUNDAY.getValue());
         Event aleEvent = getEvent(aleEventLocation);
 
         setEventAttendance(eventUser, aleEvent);
+
+        User eventMember = new User();
+        eventMember.setFirstName("Jack");
+        eventMember.setLastName("Tester");
+        eventMember.setLogin("Jack");
+        eventMember.setPassword(passwordEncoder.encode("user"));
+        eventMember.setEmail("tester@mail.com");
+        eventMember.getAuthorities().add(authorityRepository.findByName(AuthoritiesConstants.MEMBER)
+            .orElseThrow(RuntimeException::new));
+        eventMember.setActivated(true);
+        EventLocation memberHomeLocation = getEventLocation("Tortuga", DayOfWeek.MONDAY.getValue());
+        eventMember.setHomeLocation(memberHomeLocation);
+        userRepository.save(eventMember);
+
     }
 
-    private void setEventAttendance(EventUser eventUser, Event event) {
+    private void setEventAttendance(User eventUser, Event event) {
         EventAttendance eventAttendance = new EventAttendance();
         eventAttendance.setAttendanceDate(LocalDate.now());
         eventAttendance.setEvent(event);
-        eventAttendance.setEventUser(eventUser);
+        eventAttendance.setUser(eventUser);
         eventAttendanceRepository.save(eventAttendance);
     }
 

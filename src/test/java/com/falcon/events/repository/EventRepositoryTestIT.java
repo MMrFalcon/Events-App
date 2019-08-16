@@ -21,7 +21,7 @@ public class EventRepositoryTestIT extends AbstractRepositoryTest {
     @BeforeEach
     public void setup() {
         EventsBootstrap eventsBootstrap = new EventsBootstrap(eventLocationRepository, eventRepository,
-            eventAttendanceRepository, eventUserRepository);
+            eventAttendanceRepository, userRepository, passwordEncoder, authorityRepository);
     }
 
     @Test
