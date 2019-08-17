@@ -104,6 +104,7 @@
                 <div class="form-group">
                     <label for="homeLocation" class="form-control-label">Home Location</label>
                     <select class="form-control" id="homeLocation" name="homeLocation" formControlName="homeLocation">
+                        <option [value]="null" [selected]="">Select Nearest Location</option>
                         <option [ngValue]="location" *ngFor="let location of locations" >{{location.locationName}}</option>
                     </select>
                 </div>

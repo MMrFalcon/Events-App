@@ -70,8 +70,7 @@ export class UserMgmtUpdateComponent implements OnInit {
       email: user.email,
       activated: user.activated,
       langKey: user.langKey,
-      authorities: user.authorities,
-      homeLocation: user.homeLocation
+      authorities: user.authorities
     });
   }
 

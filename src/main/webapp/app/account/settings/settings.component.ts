@@ -93,8 +93,7 @@ export class SettingsComponent implements OnInit {
       authorities: account.authorities,
       langKey: account.langKey,
       login: account.login,
-      imageUrl: account.imageUrl,
-      homeLocation: account.homeLocation
+      imageUrl: account.imageUrl
     });
   }
 
