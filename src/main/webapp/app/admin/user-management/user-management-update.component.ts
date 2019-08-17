@@ -1,8 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { User, UserService } from 'app/core';
+import { EventLocationService } from 'app/entities/event-location';
+import { JhiAlertService } from 'ng-jhipster';
+import { filter, map } from 'rxjs/operators';
+import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
+import { IEventLocation } from 'app/shared/model/event-location.model';
 
 @Component({
   selector: 'jhi-user-mgmt-update',
@@ -13,6 +18,7 @@ export class UserMgmtUpdateComponent implements OnInit {
   languages: any[];
   authorities: any[];
   isSaving: boolean;
+  locations: IEventLocation[];
 
   editForm = this.fb.group({
     id: [null],
@@ -22,13 +28,29 @@ export class UserMgmtUpdateComponent implements OnInit {
     email: ['', [Validators.minLength(5), Validators.maxLength(254), Validators.email]],
     activated: [true],
     langKey: [],
-    authorities: []
+    authorities: [],
+    homeLocation: []
   });
 
-  constructor(private userService: UserService, private route: ActivatedRoute, private router: Router, private fb: FormBuilder) {}
+  constructor(
+    private userService: UserService,
+    private route: ActivatedRoute,
+    private router: Router,
+    private fb: FormBuilder,
+    private eventLocationService: EventLocationService,
+    private jhiAlertService: JhiAlertService
+  ) {}
 
   ngOnInit() {
     this.isSaving = false;
+    this.eventLocationService
+      .query()
+      .pipe(
+        filter((mayBeOk: HttpResponse<IEventLocation[]>) => mayBeOk.ok),
+        map((response: HttpResponse<IEventLocation[]>) => response.body)
+      )
+      .subscribe((res: IEventLocation[]) => (this.locations = res), (res: HttpErrorResponse) => this.onError(res.message));
+
     this.route.data.subscribe(({ user }) => {
       this.user = user.body ? user.body : user;
       this.updateForm(this.user);
@@ -75,6 +97,7 @@ export class UserMgmtUpdateComponent implements OnInit {
     user.activated = this.editForm.get(['activated']).value;
     user.langKey = this.editForm.get(['langKey']).value;
     user.authorities = this.editForm.get(['authorities']).value;
+    user.homeLocation = this.editForm.get(['homeLocation']).value;
   }
 
   private onSaveSuccess(result) {
@@ -84,5 +107,9 @@ export class UserMgmtUpdateComponent implements OnInit {
 
   private onSaveError() {
     this.isSaving = false;
+  }
+
+  protected onError(errorMessage: string) {
+    this.jhiAlertService.error(errorMessage, null, null);
   }
 }

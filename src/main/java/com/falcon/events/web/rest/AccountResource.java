@@ -2,18 +2,20 @@ package com.falcon.events.web.rest;
 
 
 import com.falcon.events.domain.PersistentToken;
-import com.falcon.events.repository.PersistentTokenRepository;
 import com.falcon.events.domain.User;
+import com.falcon.events.repository.PersistentTokenRepository;
 import com.falcon.events.repository.UserRepository;
 import com.falcon.events.security.SecurityUtils;
 import com.falcon.events.service.MailService;
 import com.falcon.events.service.UserService;
 import com.falcon.events.service.dto.PasswordChangeDTO;
 import com.falcon.events.service.dto.UserDTO;
-import com.falcon.events.web.rest.errors.*;
+import com.falcon.events.web.rest.errors.EmailAlreadyUsedException;
+import com.falcon.events.web.rest.errors.EmailNotFoundException;
+import com.falcon.events.web.rest.errors.InvalidPasswordException;
+import com.falcon.events.web.rest.errors.LoginAlreadyUsedException;
 import com.falcon.events.web.rest.vm.KeyAndPasswordVM;
 import com.falcon.events.web.rest.vm.ManagedUserVM;
-
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,7 +26,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
-import java.util.*;
+import java.util.List;
+import java.util.Optional;
 
 /**
  * REST controller for managing the current user's account.
@@ -133,7 +136,7 @@ public class AccountResource {
             throw new AccountResourceException("User could not be found");
         }
         userService.updateUser(userDTO.getFirstName(), userDTO.getLastName(), userDTO.getEmail(),
-            userDTO.getLangKey(), userDTO.getImageUrl());
+            userDTO.getLangKey(), userDTO.getImageUrl(), userDTO.getHomeLocation());
     }
 
     /**

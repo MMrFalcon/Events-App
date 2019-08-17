@@ -1,14 +1,14 @@
 package com.falcon.events.service.dto;
 
 import com.falcon.events.config.Constants;
-
 import com.falcon.events.domain.Authority;
+import com.falcon.events.domain.EventLocation;
 import com.falcon.events.domain.User;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
-
-import javax.validation.constraints.*;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 import java.time.Instant;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -53,6 +53,8 @@ public class UserDTO {
 
     private Set<String> authorities;
 
+    private EventLocation homeLocation;
+
     public UserDTO() {
         // Empty constructor needed for Jackson.
     }
@@ -73,6 +75,7 @@ public class UserDTO {
         this.authorities = user.getAuthorities().stream()
             .map(Authority::getName)
             .collect(Collectors.toSet());
+        this.homeLocation = user.getHomeLocation();
     }
 
     public Long getId() {
@@ -179,6 +182,14 @@ public class UserDTO {
         this.authorities = authorities;
     }
 
+    public EventLocation getHomeLocation() {
+        return homeLocation;
+    }
+
+    public void setHomeLocation(EventLocation homeLocation) {
+        this.homeLocation = homeLocation;
+    }
+
     @Override
     public String toString() {
         return "UserDTO{" +
@@ -194,6 +205,7 @@ public class UserDTO {
             ", lastModifiedBy='" + lastModifiedBy + '\'' +
             ", lastModifiedDate=" + lastModifiedDate +
             ", authorities=" + authorities +
+            ", homeLocation=" + homeLocation +
             "}";
     }
 }

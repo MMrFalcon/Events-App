@@ -2,6 +2,7 @@ package com.falcon.events.service;
 
 import com.falcon.events.config.Constants;
 import com.falcon.events.domain.Authority;
+import com.falcon.events.domain.EventLocation;
 import com.falcon.events.domain.User;
 import com.falcon.events.repository.AuthorityRepository;
 import com.falcon.events.repository.PersistentTokenRepository;
@@ -120,6 +121,7 @@ public class UserService {
         newUser.setActivated(false);
         // new user gets registration key
         newUser.setActivationKey(RandomUtil.generateActivationKey());
+        newUser.setHomeLocation(userDTO.getHomeLocation());
         Set<Authority> authorities = new HashSet<>();
         authorityRepository.findById(AuthoritiesConstants.MEMBER).ifPresent(authorities::add);
         newUser.setAuthorities(authorities);
@@ -153,6 +155,7 @@ public class UserService {
         }
         String encryptedPassword = passwordEncoder.encode(RandomUtil.generatePassword());
         user.setPassword(encryptedPassword);
+        user.setHomeLocation(userDTO.getHomeLocation());
         user.setResetKey(RandomUtil.generateResetKey());
         user.setResetDate(Instant.now());
         user.setActivated(true);
@@ -179,7 +182,9 @@ public class UserService {
      * @param langKey   language key.
      * @param imageUrl  image URL of user.
      */
-    public void updateUser(String firstName, String lastName, String email, String langKey, String imageUrl) {
+    public void updateUser(String firstName, String lastName, String email, String langKey, String imageUrl,
+                           EventLocation homeLocation) {
+
         SecurityUtils.getCurrentUserLogin()
             .flatMap(userRepository::findOneByLogin)
             .ifPresent(user -> {
@@ -188,6 +193,7 @@ public class UserService {
                 user.setEmail(email.toLowerCase());
                 user.setLangKey(langKey);
                 user.setImageUrl(imageUrl);
+                user.setHomeLocation(homeLocation);
                 this.clearUserCaches(user);
                 log.debug("Changed Information for User: {}", user);
             });
@@ -213,6 +219,7 @@ public class UserService {
                 user.setImageUrl(userDTO.getImageUrl());
                 user.setActivated(userDTO.isActivated());
                 user.setLangKey(userDTO.getLangKey());
+                user.setHomeLocation(userDTO.getHomeLocation());
                 Set<Authority> managedAuthorities = user.getAuthorities();
                 managedAuthorities.clear();
                 userDTO.getAuthorities().stream()
