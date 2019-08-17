@@ -62,10 +62,12 @@ export class RegisterComponent implements OnInit, AfterViewInit {
     const login = this.registerForm.get(['login']).value;
     const email = this.registerForm.get(['email']).value;
     const password = this.registerForm.get(['password']).value;
+    const homeLocation = this.registerForm.get(['homeLocation']).value;
+
     if (password !== this.registerForm.get(['confirmPassword']).value) {
       this.doNotMatch = 'ERROR';
     } else {
-      registerAccount = { ...registerAccount, login, email, password };
+      registerAccount = { ...registerAccount, login, email, password, homeLocation };
       this.doNotMatch = null;
       this.error = null;
       this.errorUserExists = null;
