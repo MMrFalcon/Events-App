@@ -1,12 +1,58 @@
 <div class="row">
     <div class="col-md-12">
-        <h1 class="text-center">Welcome to Events App!</h1>
 
         <div [ngSwitch]="isAuthenticated()">
-            <div class="alert alert-success mt-5" *ngSwitchCase="true">
+            <div class="alert alert-dark mt-5" *ngSwitchCase="true">
                 <span id="home-logged-message" *ngIf="account"
-                   > You are logged in as user "{{account.login}}"</span>
+                > <h1 class="text-center" style="color: #40C0C0">Welcome to Events App {{account.login}}!</h1></span>
             </div>
+
+            <div class="alert alert-dark mt-5" *ngSwitchCase="false">
+                <h1 class="text-center" style="color: #40C0C0">Welcome to Events App!</h1>
+            </div>
+            <div class="alert alert-dark" *ngSwitchCase="true">
+                <div *jhiHasAnyAuthority="'ROLE_MEMBER'" [hidden]="subscribeEventAttendances(account?.login)">
+                    <p class="text-center" style="color: #1abc9c">If you are Event organizer please contact with your
+                        administrator for privillage promote.</p>
+                    <br/>
+                    <h3 class="text-center">Assigned Events</h3>
+                    <br/>
+
+                    <div class="alert alert-warning" *ngIf="eventAttendances?.length === 0">
+                        <span>No events found</span>
+                    </div>
+
+                    <div class="table-responsive" *ngIf="eventAttendances?.length > 0">
+                        <table class="table table-striped">
+                            <thead>
+                            <tr>
+                                <th>
+                                    <span>Event Date</span>
+                                </th>
+                                <th>
+                                    <span>Event Code</span>
+                                </th>
+                                <th><span>Event Location</span>
+                                </th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr *ngFor="let eventAttendance of eventAttendances">
+                                <td>{{eventAttendance.eventDTO.eventDate | date:'mediumDate'}}</td>
+                                <td>{{eventAttendance.eventDTO.eventCode}}</td>
+                                <td>
+                                    <div *ngIf="eventAttendance.eventDTO.eventLocationDTO">
+                                        {{eventAttendance.eventDTO.eventLocationDTO.locationName}}
+                                    </div>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                </div>
+            </div>
+
 
             <div class="alert alert-success mt-5" *ngSwitchCase="false">
                 <a class="alert-link" (click)="login()">Sign in</a><span>, for events creation<br/>

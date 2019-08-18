@@ -36,7 +36,7 @@ export const eventLocationRoute: Routes = [
       pagingParams: JhiResolvePagingParams
     },
     data: {
-      authorities: ['ROLE_ADMIN'],
+      authorities: ['ROLE_ADMIN', 'ROLE_ORGANIZER'],
       defaultSort: 'id,asc',
       pageTitle: 'EventLocations'
     },
@@ -49,7 +49,7 @@ export const eventLocationRoute: Routes = [
       eventLocation: EventLocationResolve
     },
     data: {
-      authorities: ['ROLE_ADMIN'],
+      authorities: ['ROLE_ADMIN', 'ROLE_ORGANIZER'],
       pageTitle: 'EventLocations'
     },
     canActivate: [UserRouteAccessService]
@@ -61,7 +61,7 @@ export const eventLocationRoute: Routes = [
       eventLocation: EventLocationResolve
     },
     data: {
-      authorities: ['ROLE_ADMIN'],
+      authorities: ['ROLE_ADMIN', 'ROLE_ORGANIZER'],
       pageTitle: 'EventLocations'
     },
     canActivate: [UserRouteAccessService]
@@ -73,7 +73,7 @@ export const eventLocationRoute: Routes = [
       eventLocation: EventLocationResolve
     },
     data: {
-      authorities: ['ROLE_ADMIN'],
+      authorities: ['ROLE_ADMIN', 'ROLE_ORGANIZER'],
       pageTitle: 'EventLocations'
     },
     canActivate: [UserRouteAccessService]
@@ -88,7 +88,7 @@ export const eventLocationPopupRoute: Routes = [
       eventLocation: EventLocationResolve
     },
     data: {
-      authorities: ['ROLE_ADMIN'],
+      authorities: ['ROLE_ADMIN', 'ROLE_ORGANIZER'],
       pageTitle: 'EventLocations'
     },
     canActivate: [UserRouteAccessService],

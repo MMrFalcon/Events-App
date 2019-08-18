@@ -45,6 +45,12 @@ export class EventAttendanceService {
       .pipe(map((res: EntityArrayResponseType) => this.convertDateArrayFromServer(res)));
   }
 
+  findByUserLogin(login: string): Observable<EntityArrayResponseType> {
+    return this.http
+      .get<IEventAttendance[]>(`${this.resourceUrl}/byUser/${login}`, { observe: 'response' })
+      .pipe(map((res: EntityArrayResponseType) => this.convertDateArrayFromServer(res)));
+  }
+
   delete(id: number): Observable<HttpResponse<any>> {
     return this.http.delete<any>(`${this.resourceUrl}/${id}`, { observe: 'response' });
   }

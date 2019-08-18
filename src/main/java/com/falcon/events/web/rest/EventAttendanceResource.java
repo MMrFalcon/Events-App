@@ -96,6 +96,20 @@ public class EventAttendanceResource {
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
+//TODO test me and
+    /**
+     * {@code GET  /event-attendances/:login} : get all the eventAttendances for user with login.
+     *
+
+     * @param login the user login.
+
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of eventAttendances in body.
+     */
+    @GetMapping("/event-attendances/byUser/{login}")
+    public ResponseEntity<List<EventAttendanceDTO>> getEventAttendanceByUserLogin(@PathVariable String login) {
+        List<EventAttendanceDTO> eventAttendanceDTOList = eventAttendanceService.findByUserLogin(login);
+        return ResponseEntity.ok(eventAttendanceDTOList);
+    }
 
     /**
      * {@code GET  /event-attendances/:id} : get the "id" eventAttendance.
