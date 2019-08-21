@@ -87,7 +87,13 @@ public class EventAttendanceServiceImpl implements EventAttendanceService {
         log.debug("Request to delete EventAttendance : {}", id);
         eventAttendanceRepository.deleteById(id);
     }
-//TODO test me and write some doc
+
+    /**
+     * Get all the eventAttendances for user.
+     *
+     * @param userLogin user login.
+     * @return the list of entities.
+     */
     @Override
     public List<EventAttendanceDTO> findByUserLogin(String userLogin) {
         log.debug("Request to get EventAttendances by user login");
