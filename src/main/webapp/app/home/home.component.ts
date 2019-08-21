@@ -4,9 +4,14 @@ import { JhiAlertService, JhiEventManager } from 'ng-jhipster';
 
 import { Account, AccountService, LoginModalService } from 'app/core';
 import { EventAttendanceService } from 'app/entities/event-attendance';
-import { IEventAttendance } from 'app/shared/model/event-attendance.model';
+import { EventAttendance, IEventAttendance } from 'app/shared/model/event-attendance.model';
 import { filter, map } from 'rxjs/operators';
 import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
+import { FormBuilder, Validators } from '@angular/forms';
+import { IEvent } from 'app/shared/model/event.model';
+import { EventService } from 'app/entities/event';
+import { Observable } from 'rxjs';
+import moment = require('moment');
 
 @Component({
   selector: 'jhi-home',
@@ -17,21 +22,30 @@ export class HomeComponent implements OnInit {
   account: Account;
   modalRef: NgbModalRef;
   eventAttendances: IEventAttendance[];
+  events: IEvent[];
+  isSaving: boolean;
+
+  attendanceForm = this.fb.group({
+    eventDTO: ['', [Validators.required]]
+  });
 
   constructor(
     private accountService: AccountService,
     private loginModalService: LoginModalService,
     private eventManager: JhiEventManager,
     private eventAttendanceService: EventAttendanceService,
-    private jhiAlertService: JhiAlertService
+    private jhiAlertService: JhiAlertService,
+    private fb: FormBuilder,
+    private eventService: EventService
   ) {}
 
   ngOnInit() {
+    this.isSaving = false;
     this.accountService.identity().then((account: Account) => {
-      // this.subscribeEventAttendances();
       this.account = account;
     });
     this.registerAuthenticationSuccess();
+    this.subscribeAllEvents();
   }
 
   registerAuthenticationSuccess() {
@@ -58,11 +72,60 @@ export class HomeComponent implements OnInit {
     }
   }
 
+  subscribeAllEvents() {
+    if (this.events === undefined) {
+      this.eventService
+        .query()
+        .pipe(
+          filter((mayBeOk: HttpResponse<IEvent[]>) => mayBeOk.ok),
+          map((response: HttpResponse<IEvent[]>) => response.body)
+        )
+        .subscribe((res: IEvent[]) => (this.events = res), (res: HttpErrorResponse) => this.onError(res.message));
+    }
+  }
+
   login() {
     this.modalRef = this.loginModalService.open();
   }
 
+  save() {
+    this.isSaving = true;
+    const eventAttendance = this.createFromForm();
+    this.subscribeToSaveResponse(this.eventAttendanceService.create(eventAttendance));
+  }
+
+  private createFromForm(): IEventAttendance {
+    return {
+      ...new EventAttendance(),
+      // id: this.editForm.get(['id']).value,
+      attendanceDate: moment(),
+      eventDTO: this.attendanceForm.get(['eventDTO']).value,
+      userDTO: this.account
+    };
+  }
+
   protected onError(errorMessage: string) {
     this.jhiAlertService.error(errorMessage, null, null);
+  }
+
+  trackEventById(index: number, item: IEvent) {
+    return item;
+  }
+
+  previousState() {
+    window.history.back();
+  }
+
+  protected onSaveSuccess() {
+    this.isSaving = false;
+    this.previousState();
+  }
+
+  protected onSaveError() {
+    this.isSaving = false;
+  }
+
+  protected subscribeToSaveResponse(result: Observable<HttpResponse<IEventAttendance>>) {
+    result.subscribe(() => this.onSaveSuccess(), () => this.onSaveError());
   }
 }
