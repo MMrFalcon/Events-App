@@ -97,7 +97,6 @@ export class HomeComponent implements OnInit {
   private createFromForm(): IEventAttendance {
     return {
       ...new EventAttendance(),
-      // id: this.editForm.get(['id']).value,
       attendanceDate: moment(),
       eventDTO: this.attendanceForm.get(['eventDTO']).value,
       userDTO: this.account
@@ -112,13 +111,9 @@ export class HomeComponent implements OnInit {
     return item;
   }
 
-  previousState() {
-    window.history.back();
-  }
-
   protected onSaveSuccess() {
     this.isSaving = false;
-    this.previousState();
+    location.reload();
   }
 
   protected onSaveError() {
