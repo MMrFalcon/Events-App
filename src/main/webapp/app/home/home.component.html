@@ -55,6 +55,18 @@
 
             <br/>
             <div class="alert alert-dark" *ngSwitchCase="true">
+                <div class="alert alert-danger" *ngIf="duplicateAttendanceError">
+                    <strong>
+                        {{duplicateAttendanceError}}
+                    </strong>
+                </div>
+
+                <div class="alert alert-danger" *ngIf="unhandledError">
+                    <strong>
+                        {{unhandledError}}
+                    </strong>
+                </div>
+
                 <div *jhiHasAnyAuthority="'ROLE_MEMBER'" [hidden]="subscribeAllEvents()">
                     <h3 class="text-center" style="color: #40C0C0">Are You Taking Part in Event {{account.login}}? </h3>
                     <form name="attendanceForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="attendanceForm">

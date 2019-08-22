@@ -24,6 +24,8 @@ export class HomeComponent implements OnInit {
   eventAttendances: IEventAttendance[];
   events: IEvent[];
   isSaving: boolean;
+  duplicateAttendanceError: string;
+  unhandledError: string;
 
   attendanceForm = this.fb.group({
     eventDTO: ['', [Validators.required]]
@@ -116,11 +118,16 @@ export class HomeComponent implements OnInit {
     location.reload();
   }
 
-  protected onSaveError() {
+  protected onSaveError(errorResponse: HttpErrorResponse) {
     this.isSaving = false;
+    if (errorResponse.status === 400) {
+      this.duplicateAttendanceError = 'Attendance already exist in system. ';
+    } else {
+      this.unhandledError = 'Something went wrong, that is not your fault';
+    }
   }
 
   protected subscribeToSaveResponse(result: Observable<HttpResponse<IEventAttendance>>) {
-    result.subscribe(() => this.onSaveSuccess(), () => this.onSaveError());
+    result.subscribe(() => this.onSaveSuccess(), errorResponse => this.onSaveError(errorResponse));
   }
 }

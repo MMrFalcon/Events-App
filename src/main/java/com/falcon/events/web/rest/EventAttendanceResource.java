@@ -139,7 +139,7 @@ public class EventAttendanceResource {
         return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(applicationName, false, ENTITY_NAME, id.toString())).build();
     }
 
-    public void checkForDuplicateEventAttendance(String attendanceUserLogin, String eventCode) {
+    private void checkForDuplicateEventAttendance(String attendanceUserLogin, String eventCode) {
         List<EventAttendanceDTO> eventAttendances = eventAttendanceService.findByUserLogin(attendanceUserLogin);
         if (!eventAttendances.isEmpty()) {
             for (EventAttendanceDTO eventAttendanceDTO : eventAttendances) {
