@@ -17,7 +17,6 @@
         <table class="table table-striped">
             <thead>
             <tr jhiSort [(predicate)]="predicate" [(ascending)]="reverse" [callback]="transition.bind(this)">
-            <th jhiSortBy="id"><span>ID</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th jhiSortBy="eventDate"><span>Event Date</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th jhiSortBy="eventCode"><span>Event Code</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th jhiSortBy="eventLocationId"><span>Event Location</span> <fa-icon [icon]="'sort'"></fa-icon></th>
@@ -26,7 +25,6 @@
             </thead>
             <tbody>
             <tr *ngFor="let event of events ;trackBy: trackId">
-                <td><a [routerLink]="['/event', event.id, 'view' ]">{{event.id}}</a></td>
                 <td>{{event.eventDate | date:'mediumDate'}}</td>
                 <td>{{event.eventCode}}</td>
                 <td>
@@ -42,13 +40,13 @@
                             <fa-icon [icon]="'eye'"></fa-icon>
                             <span class="d-none d-md-inline">View</span>
                         </button>
-                        <button type="submit"
+                        <button *jhiHasAnyAuthority="'ROLE_ADMIN'" type="submit"
                                 [routerLink]="['/event', event.id, 'edit']"
                                 class="btn btn-primary btn-sm">
                             <fa-icon [icon]="'pencil-alt'"></fa-icon>
                             <span class="d-none d-md-inline">Edit</span>
                         </button>
-                        <button type="submit"
+                        <button *jhiHasAnyAuthority="'ROLE_ADMIN'" type="submit"
                                 [routerLink]="['/', 'event', { outlets: { popup: event.id + '/delete'} }]"
                                 replaceUrl="true"
                                 queryParamsHandling="merge"

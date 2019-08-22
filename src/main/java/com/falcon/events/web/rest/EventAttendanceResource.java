@@ -2,6 +2,7 @@ package com.falcon.events.web.rest;
 
 import com.falcon.events.service.EventAttendanceService;
 import com.falcon.events.service.dto.EventAttendanceDTO;
+import com.falcon.events.web.rest.errors.AttendanceAlreadyAddedException;
 import com.falcon.events.web.rest.errors.BadRequestAlertException;
 import io.github.jhipster.web.util.HeaderUtil;
 import io.github.jhipster.web.util.PaginationUtil;
@@ -47,6 +48,7 @@ public class EventAttendanceResource {
      * @param eventAttendanceDTO the eventAttendanceDTO to create.
      * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new eventAttendanceDTO, or with status {@code 400 (Bad Request)} if the eventAttendance has already an ID.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
+     * @throws AttendanceAlreadyAddedException {@code 400 (Bad Request)} if the attendance was added.
      */
     @PostMapping("/event-attendances")
     public ResponseEntity<EventAttendanceDTO> createEventAttendance(@RequestBody EventAttendanceDTO eventAttendanceDTO) throws URISyntaxException {
@@ -54,6 +56,8 @@ public class EventAttendanceResource {
         if (eventAttendanceDTO.getId() != null) {
             throw new BadRequestAlertException("A new eventAttendance cannot already have an ID", ENTITY_NAME, "idexists");
         }
+
+        checkForDuplicateEventAttendance(eventAttendanceDTO.getUserDTO().getLogin(), eventAttendanceDTO.getEventDTO().getEventCode());
         EventAttendanceDTO result = eventAttendanceService.save(eventAttendanceDTO);
         return ResponseEntity.created(new URI("/api/event-attendances/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, false, ENTITY_NAME, result.getId().toString()))
@@ -96,6 +100,18 @@ public class EventAttendanceResource {
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
+//TODO test me and
+    /**
+     * {@code GET  /event-attendances/:login} : get all the eventAttendances for user with login.
+     *
+     * @param login the user login.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of eventAttendances in body.
+     */
+    @GetMapping("/event-attendances/byUser/{login}")
+    public ResponseEntity<List<EventAttendanceDTO>> getEventAttendanceByUserLogin(@PathVariable String login) {
+        List<EventAttendanceDTO> eventAttendanceDTOList = eventAttendanceService.findByUserLogin(login);
+        return ResponseEntity.ok(eventAttendanceDTOList);
+    }
 
     /**
      * {@code GET  /event-attendances/:id} : get the "id" eventAttendance.
@@ -121,5 +137,17 @@ public class EventAttendanceResource {
         log.debug("REST request to delete EventAttendance : {}", id);
         eventAttendanceService.delete(id);
         return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(applicationName, false, ENTITY_NAME, id.toString())).build();
+    }
+
+    private void checkForDuplicateEventAttendance(String attendanceUserLogin, String eventCode) {
+        List<EventAttendanceDTO> eventAttendances = eventAttendanceService.findByUserLogin(attendanceUserLogin);
+        if (!eventAttendances.isEmpty()) {
+            for (EventAttendanceDTO eventAttendanceDTO : eventAttendances) {
+                if (eventAttendanceDTO.getEventDTO().getEventCode().equalsIgnoreCase(eventCode)) {
+                    throw new AttendanceAlreadyAddedException("Attendance already exist in system.",
+                        "eventAttendanceDTO", "attendanceExist");
+                }
+            }
+        }
     }
 }

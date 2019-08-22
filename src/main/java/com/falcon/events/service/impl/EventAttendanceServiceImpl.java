@@ -12,7 +12,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * Service Implementation for managing {@link EventAttendance}.
@@ -84,5 +86,18 @@ public class EventAttendanceServiceImpl implements EventAttendanceService {
     public void delete(Long id) {
         log.debug("Request to delete EventAttendance : {}", id);
         eventAttendanceRepository.deleteById(id);
+    }
+
+    /**
+     * Get all the eventAttendances for user.
+     *
+     * @param userLogin user login.
+     * @return the list of entities.
+     */
+    @Override
+    public List<EventAttendanceDTO> findByUserLogin(String userLogin) {
+        log.debug("Request to get EventAttendances by user login");
+        return eventAttendanceRepository.findEventAttendanceByUser_Login(userLogin)
+            .stream().map(eventAttendanceMapper::toDto).collect(Collectors.toList());
     }
 }

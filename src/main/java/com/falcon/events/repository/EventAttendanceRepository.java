@@ -17,4 +17,6 @@ public interface EventAttendanceRepository extends JpaRepository<EventAttendance
     @Query("select eventAttendance from EventAttendance eventAttendance where eventAttendance.user.login = ?#{principal.username}")
     List<EventAttendance> findByUserIsCurrentUser();
 
+    List<EventAttendance> findEventAttendanceByUser_Login(String userLogin);
+
 }

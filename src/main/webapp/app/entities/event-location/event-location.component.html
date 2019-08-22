@@ -17,7 +17,6 @@
         <table class="table table-striped">
             <thead>
             <tr jhiSort [(predicate)]="predicate" [(ascending)]="reverse" [callback]="transition.bind(this)">
-            <th jhiSortBy="id"><span>ID</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th jhiSortBy="locationName"><span>Location Name</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th jhiSortBy="eventDayOfWeek"><span>Event Day Of Week</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th></th>
@@ -25,7 +24,6 @@
             </thead>
             <tbody>
             <tr *ngFor="let eventLocation of eventLocations ;trackBy: trackId">
-                <td><a [routerLink]="['/event-location', eventLocation.id, 'view' ]">{{eventLocation.id}}</a></td>
                 <td>{{eventLocation.locationName}}</td>
                 <td>{{eventLocation.eventDayOfWeek}}</td>
                 <td class="text-right">

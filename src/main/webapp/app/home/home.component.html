@@ -1,11 +1,91 @@
 <div class="row">
     <div class="col-md-12">
-        <h1 class="text-center">Welcome to Events App!</h1>
 
         <div [ngSwitch]="isAuthenticated()">
-            <div class="alert alert-success mt-5" *ngSwitchCase="true">
+            <div class="alert alert-dark mt-5" *ngSwitchCase="true">
                 <span id="home-logged-message" *ngIf="account"
-                   > You are logged in as user "{{account.login}}"</span>
+                > <h1 class="text-center" style="color: #40C0C0">Welcome to Events App {{account.login}}!</h1></span>
+            </div>
+
+            <div class="alert alert-dark mt-5" *ngSwitchCase="false">
+                <h1 class="text-center" style="color: #40C0C0">Welcome to Events App!</h1>
+            </div>
+            <div class="alert alert-dark" *ngSwitchCase="true">
+                <div *jhiHasAnyAuthority="['ROLE_MEMBER','ROLE_ORGANIZER']" [hidden]="subscribeEventAttendances(account?.login)">
+                    <p *jhiHasAnyAuthority="'ROLE_MEMBER'" class="text-center" style="color: #1abc9c">If you are Event organizer please contact with your
+                        administrator for privillage promote.</p>
+
+                    <p *jhiHasAnyAuthority="'ROLE_ORGANIZER'" class="text-center" style="color: #1abc9c">If you wanna organize new event all you have to do is add location of event.</p>
+                    <br/>
+                    <h3 class="text-center">Assigned Events</h3>
+                    <br/>
+
+                    <div class="alert alert-warning" *ngIf="eventAttendances?.length === 0">
+                        <span>No events found</span>
+                    </div>
+
+                    <div class="table-responsive" *ngIf="eventAttendances?.length > 0">
+                        <table class="table table-striped">
+                            <thead>
+                            <tr>
+                                <th>
+                                    <span>Event Date</span>
+                                </th>
+                                <th>
+                                    <span>Event Code</span>
+                                </th>
+                                <th><span>Event Location</span>
+                                </th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr *ngFor="let eventAttendance of eventAttendances">
+                                <td>{{eventAttendance.eventDTO.eventDate | date:'mediumDate'}}</td>
+                                <td>{{eventAttendance.eventDTO.eventCode}}</td>
+                                <td>
+                                    <div *ngIf="eventAttendance.eventDTO.eventLocationDTO">
+                                        {{eventAttendance.eventDTO.eventLocationDTO.locationName}}
+                                    </div>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                </div>
+            </div>
+
+            <br/>
+            <div class="alert alert-dark" *ngSwitchCase="true">
+                <div class="alert alert-danger" *ngIf="duplicateAttendanceError">
+                    <strong>
+                        {{duplicateAttendanceError}}
+                    </strong>
+                </div>
+
+                <div class="alert alert-danger" *ngIf="unhandledError">
+                    <strong>
+                        {{unhandledError}}
+                    </strong>
+                </div>
+
+                <div *jhiHasAnyAuthority="['ROLE_MEMBER', 'ROLE_ORGANIZER']" [hidden]="subscribeAllEvents()">
+                    <h3 class="text-center" style="color: #40C0C0">Are You Taking Part in Event {{account.login}}? </h3>
+                    <form name="attendanceForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="attendanceForm">
+                        <div class="form-group">
+                            <select class="form-control" id="field_event" name="event" formControlName="eventDTO">
+                                <option [ngValue]="eventOption"
+                                        *ngFor="let eventOption of events; trackBy: trackEventById">{{eventOption.eventCode}}</option>
+                            </select>
+                        </div>
+                        <div class="col text-center">
+                            <button type="submit" id="save-entity" [disabled]="attendanceForm.invalid || isSaving"
+                                    class="btn btn-primary">
+                                <span>I'll be there!</span>
+                            </button>
+                        </div>
+                    </form>
+                </div>
             </div>
 
             <div class="alert alert-success mt-5" *ngSwitchCase="false">
