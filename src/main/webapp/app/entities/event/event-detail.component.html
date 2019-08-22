@@ -1,7 +1,7 @@
 <div class="row justify-content-center">
     <div class="col-8">
         <div *ngIf="event">
-            <h2><span>Event</span> {{event.id}}</h2>
+            <h2>Event</h2>
             <hr>
             <jhi-alert-error></jhi-alert-error>
             <dl class="row-md jh-entity-details">
@@ -15,8 +15,8 @@
                 </dd>
                 <dt><span>Event Location</span></dt>
                 <dd>
-                    <div *ngIf="event.eventLocationId">
-                        <a [routerLink]="['/event-location', event.eventLocationId, 'view']">{{event.eventLocationId}}</a>
+                    <div *ngIf="event.eventLocationDTO.locationName">
+                      <span>  {{event.eventLocationDTO.locationName}}</span>
                     </div>
                 </dd>
             </dl>
@@ -27,7 +27,7 @@
                 <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span> Back</span>
             </button>
 
-            <button type="button"
+            <button *jhiHasAnyAuthority="'ROLE_ADMIN'" type="button"
                     [routerLink]="['/event', event.id, 'edit']"
                     class="btn btn-primary">
                 <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span> Edit</span>

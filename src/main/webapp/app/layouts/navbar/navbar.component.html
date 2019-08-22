@@ -26,7 +26,7 @@
                     </span>
                 </a>
                 <ul class="dropdown-menu" ngbDropdownMenu aria-labelledby="entity-menu">
-                    <li *jhiHasAnyAuthority="'ROLE_ADMIN'">
+                    <li *jhiHasAnyAuthority="['ROLE_ADMIN','ROLE_ORGANIZER']">
                         <a  class="dropdown-item" routerLink="event-location" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
                             <fa-icon icon="asterisk" fixedWidth="true"></fa-icon>
                             <span>Events Locations</span>

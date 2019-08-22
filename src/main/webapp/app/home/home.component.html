@@ -11,9 +11,11 @@
                 <h1 class="text-center" style="color: #40C0C0">Welcome to Events App!</h1>
             </div>
             <div class="alert alert-dark" *ngSwitchCase="true">
-                <div *jhiHasAnyAuthority="'ROLE_MEMBER'" [hidden]="subscribeEventAttendances(account?.login)">
-                    <p class="text-center" style="color: #1abc9c">If you are Event organizer please contact with your
+                <div *jhiHasAnyAuthority="['ROLE_MEMBER','ROLE_ORGANIZER']" [hidden]="subscribeEventAttendances(account?.login)">
+                    <p *jhiHasAnyAuthority="'ROLE_MEMBER'" class="text-center" style="color: #1abc9c">If you are Event organizer please contact with your
                         administrator for privillage promote.</p>
+
+                    <p *jhiHasAnyAuthority="'ROLE_ORGANIZER'" class="text-center" style="color: #1abc9c">If you wanna organize new event all you have to do is add location of event.</p>
                     <br/>
                     <h3 class="text-center">Assigned Events</h3>
                     <br/>
@@ -67,7 +69,7 @@
                     </strong>
                 </div>
 
-                <div *jhiHasAnyAuthority="'ROLE_MEMBER'" [hidden]="subscribeAllEvents()">
+                <div *jhiHasAnyAuthority="['ROLE_MEMBER', 'ROLE_ORGANIZER']" [hidden]="subscribeAllEvents()">
                     <h3 class="text-center" style="color: #40C0C0">Are You Taking Part in Event {{account.login}}? </h3>
                     <form name="attendanceForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="attendanceForm">
                         <div class="form-group">
