@@ -27,7 +27,7 @@
                 <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span> Back</span>
             </button>
 
-            <button *jhiHasAnyAuthority="'ROLE_ADMIN'" type="button"
+            <button *jhiHasAnyAuthority="['ROLE_ADMIN', 'ROLE_ORGANIZER']" type="button"
                     [routerLink]="['/event', event.id, 'edit']"
                     class="btn btn-primary">
                 <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span> Edit</span>
