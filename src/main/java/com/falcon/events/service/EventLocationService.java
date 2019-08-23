@@ -4,6 +4,7 @@ import com.falcon.events.service.dto.EventLocationDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -42,4 +43,11 @@ public interface EventLocationService {
      * @param id the id of the entity.
      */
     void delete(Long id);
+
+    /**
+     *
+     * @param locationName name of event location
+     * @return the list of entities
+     */
+    List<EventLocationDTO> getAllLocationByName(String locationName);
 }

@@ -12,7 +12,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * Service Implementation for managing {@link EventLocation}.
@@ -84,5 +86,17 @@ public class EventLocationServiceImpl implements EventLocationService {
     public void delete(Long id) {
         log.debug("Request to delete EventLocation : {}", id);
         eventLocationRepository.deleteById(id);
+    }
+
+    /**
+     *
+     * @param locationName name of event location
+     * @return list of event locations DTO objects
+     */
+    @Override
+    public List<EventLocationDTO> getAllLocationByName(String locationName) {
+        log.debug("Searching for events location with name : {} ", locationName);
+        return eventLocationRepository.findAllByLocationName(locationName)
+            .stream().map(eventLocationMapper::toDto).collect(Collectors.toList());
     }
 }

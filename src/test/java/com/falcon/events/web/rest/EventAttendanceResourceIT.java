@@ -3,6 +3,7 @@ package com.falcon.events.web.rest;
 import com.falcon.events.EventsApp;
 import com.falcon.events.domain.EventAttendance;
 import com.falcon.events.repository.EventAttendanceRepository;
+import com.falcon.events.repository.EventRepository;
 import com.falcon.events.repository.UserRepository;
 import com.falcon.events.service.EventAttendanceService;
 import com.falcon.events.service.dto.EventAttendanceDTO;
@@ -38,7 +39,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest(classes = EventsApp.class)
 public class EventAttendanceResourceIT {
 
-    private static final LocalDate DEFAULT_ATTENDANCE_DATE = LocalDate.ofEpochDay(0L);
+    private static final LocalDate DEFAULT_ATTENDANCE_DATE = LocalDate.ofEpochDay(12312314L);
     private static final LocalDate UPDATED_ATTENDANCE_DATE = LocalDate.now(ZoneId.systemDefault());
     private static final LocalDate SMALLER_ATTENDANCE_DATE = LocalDate.ofEpochDay(-1L);
 
@@ -68,6 +69,9 @@ public class EventAttendanceResourceIT {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private EventRepository eventRepository;
 
     private MockMvc restEventAttendanceMockMvc;
 
@@ -118,7 +122,7 @@ public class EventAttendanceResourceIT {
     public void createEventAttendance() throws Exception {
         int databaseSizeBeforeCreate = eventAttendanceRepository.findAll().size();
         eventAttendance.setUser(userRepository.findOneByLogin("system").get());
-
+        eventAttendance.setEvent(eventRepository.findById(1L).get());
         // Create the EventAttendance
         EventAttendanceDTO eventAttendanceDTO = eventAttendanceMapper.toDto(eventAttendance);
         restEventAttendanceMockMvc.perform(post("/api/event-attendances")

@@ -1,5 +1,6 @@
 package com.falcon.events.repository;
 
+import com.falcon.events.bootstrap.EventsBootstrap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -22,4 +23,7 @@ abstract class AbstractRepositoryTest {
 
     @Autowired
     AuthorityRepository authorityRepository;
+
+    @Autowired
+    EventsBootstrap eventsBootstrap;
 }

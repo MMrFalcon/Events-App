@@ -15,5 +15,6 @@ import java.util.Optional;
 @Repository
 public interface EventLocationRepository extends JpaRepository<EventLocation, Long> {
     List<EventLocation> findAllByEventDayOfWeek(Integer dayOfWeek);
-    Optional<EventLocation> findByLocationName(String locationName);
+    Optional<EventLocation> findFirstByLocationName(String locationName);
+    List<EventLocation> findAllByLocationName(String locationName);
 }
