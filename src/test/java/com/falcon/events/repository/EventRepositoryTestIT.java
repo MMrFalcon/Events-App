@@ -25,9 +25,9 @@ public class EventRepositoryTestIT extends AbstractRepositoryTest {
     }
 
     @Test
-    public void findByEventLocationAndEventDate() {
+    public void findFirstByEventLocationAndEventDate() {
 
-        Optional<EventLocation> foundEventLocation = eventLocationRepository.findByLocationName(EVENT_LOCATION_NAME);
+        Optional<EventLocation> foundEventLocation = eventLocationRepository.findFirstByLocationName(EVENT_LOCATION_NAME);
 
         Optional<Event> foundEvent = eventRepository.findByEventLocationAndEventDate(foundEventLocation.get(), LocalDate.now());
 

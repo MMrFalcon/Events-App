@@ -17,6 +17,10 @@ import java.time.LocalDate;
 import java.util.Optional;
 import java.util.UUID;
 
+/**
+ * Class for loading data at application start
+ * Connected with integration tests! Look out for changes
+ */
 @Component
 public class EventsBootstrap implements CommandLineRunner {
 
@@ -68,8 +72,13 @@ public class EventsBootstrap implements CommandLineRunner {
         eventUser.setHomeLocation(userHomeLocation);
         userRepository.save(eventUser);
 
+        //Events Creation
         EventLocation aleEventLocation = getEventLocation("St Pete - Yard of Ale", DayOfWeek.SUNDAY.getValue());
         Event aleEvent = getEvent(aleEventLocation);
+
+        EventLocation secondAleLocation  = getEventLocation("St Pete - Yard of Ale", DayOfWeek.SATURDAY.getValue());
+        getEvent(secondAleLocation);
+        //End of Events Creation
 
         setEventAttendance(eventUser, aleEvent);
 
@@ -108,25 +117,35 @@ public class EventsBootstrap implements CommandLineRunner {
     }
 
     private EventLocation getEventLocation(String locationName, int dayValue) {
-        Optional<EventLocation> optionalEventLocation = eventLocationRepository.findByLocationName(locationName);
+        Optional<EventLocation> optionalEventLocation = eventLocationRepository.findFirstByLocationName(locationName);
 
         if (optionalEventLocation.isPresent()) {
-            return optionalEventLocation.get();
+            if (optionalEventLocation.get().getEventDayOfWeek() == dayValue) {
+                return optionalEventLocation.get();
+            } else {
+                return createNewEventLocation(locationName, dayValue);
+            }
         } else {
-            EventLocation eventLocation = new EventLocation();
-            eventLocation.setLocationName(locationName);
-            eventLocation.setEventDayOfWeek(dayValue);
-            eventLocationRepository.save(eventLocation);
-            return eventLocation;
+            return createNewEventLocation(locationName, dayValue);
         }
     }
 
+    private EventLocation createNewEventLocation(String locationName, int dayValue) {
+        EventLocation eventLocation = new EventLocation();
+        eventLocation.setLocationName(locationName);
+        eventLocation.setEventDayOfWeek(dayValue);
+        eventLocationRepository.save(eventLocation);
+        return eventLocation;
+    }
+
     private void addMissingUserHomeLocation() {
+        int dayOfWeek = 2;
         for (User user: userRepository.findAll()) {
             if (user.getHomeLocation() == null) {
-                EventLocation eventLocation = getEventLocation("Jungle", 2);
+                EventLocation eventLocation = getEventLocation("Port Tavern", dayOfWeek);
                 user.setHomeLocation(eventLocation);
                 userRepository.save(user);
+                ++dayOfWeek;
             }
         }
     }

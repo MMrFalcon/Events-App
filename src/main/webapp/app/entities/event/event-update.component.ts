@@ -24,7 +24,7 @@ export class EventUpdateComponent implements OnInit {
     id: [],
     eventDate: [null, [Validators.required]],
     eventCode: [],
-    eventLocation: []
+    eventLocation: [null, [Validators.required]]
   });
 
   constructor(

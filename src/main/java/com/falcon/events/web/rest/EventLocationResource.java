@@ -3,6 +3,7 @@ package com.falcon.events.web.rest;
 import com.falcon.events.service.EventLocationService;
 import com.falcon.events.service.dto.EventLocationDTO;
 import com.falcon.events.web.rest.errors.BadRequestAlertException;
+import com.falcon.events.web.rest.errors.EventLocationExistException;
 import io.github.jhipster.web.util.HeaderUtil;
 import io.github.jhipster.web.util.PaginationUtil;
 import io.github.jhipster.web.util.ResponseUtil;
@@ -56,6 +57,8 @@ public class EventLocationResource {
         if (eventLocationDTO.getId() != null) {
             throw new BadRequestAlertException("A new eventLocation cannot already have an ID", ENTITY_NAME, "idexists");
         }
+
+        checkForDuplicateEventsLocations(eventLocationDTO.getLocationName(), eventLocationDTO.getEventDayOfWeek());
         EventLocationDTO result = eventLocationService.save(eventLocationDTO);
         return ResponseEntity.created(new URI("/api/event-locations/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, false, ENTITY_NAME, result.getId().toString()))
@@ -77,6 +80,8 @@ public class EventLocationResource {
         if (eventLocationDTO.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
+
+        checkForDuplicateEventsLocations(eventLocationDTO.getLocationName(), eventLocationDTO.getEventDayOfWeek());
         EventLocationDTO result = eventLocationService.save(eventLocationDTO);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(applicationName, false, ENTITY_NAME, eventLocationDTO.getId().toString()))
@@ -123,5 +128,15 @@ public class EventLocationResource {
         log.debug("REST request to delete EventLocation : {}", id);
         eventLocationService.delete(id);
         return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(applicationName, false, ENTITY_NAME, id.toString())).build();
+    }
+
+    private void checkForDuplicateEventsLocations(String eventLocationName, int dayOfWeek) {
+        List<EventLocationDTO> eventLocations = eventLocationService.getAllLocationByName(eventLocationName);
+
+        for (EventLocationDTO location : eventLocations) {
+            if (location.getEventDayOfWeek() == dayOfWeek) {
+                throw  new EventLocationExistException("Event Location already exist in the system", "eventLocationDTO", "locationExist");
+            }
+        }
     }
 }

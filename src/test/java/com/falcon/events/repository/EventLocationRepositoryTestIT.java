@@ -14,6 +14,7 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+
 @SpringBootTest(classes = EventsApp.class)
 class EventLocationRepositoryTestIT extends AbstractRepositoryTest {
 
@@ -36,14 +37,23 @@ class EventLocationRepositoryTestIT extends AbstractRepositoryTest {
     }
 
     @Test
-    void findByLocationName() {
-        Optional<EventLocation> firstOptionalLocation = eventLocationRepository.findByLocationName(FIRST_EVENT_LOCATION_NAME);
-        Optional<EventLocation> secondOptionalLocation = eventLocationRepository.findByLocationName(SECOND_EVENT_LOCATION_NAME);
+    void findFirstByLocationName() {
+        Optional<EventLocation> firstOptionalLocation = eventLocationRepository.findFirstByLocationName(FIRST_EVENT_LOCATION_NAME);
+        Optional<EventLocation> secondOptionalLocation = eventLocationRepository.findFirstByLocationName(SECOND_EVENT_LOCATION_NAME);
 
         assertTrue(firstOptionalLocation.isPresent());
         assertTrue(secondOptionalLocation.isPresent());
 
         assertEquals(FIRST_EVENT_LOCATION_NAME, firstOptionalLocation.get().getLocationName());
         assertEquals(SECOND_EVENT_LOCATION_NAME, secondOptionalLocation.get().getLocationName());
+    }
+
+    @Test
+    void findAllByLocationName() {
+        List<EventLocation> eventLocations = eventLocationRepository.findAllByLocationName(SECOND_EVENT_LOCATION_NAME);
+        List<EventLocation> mostlyUsedEventLocation = eventLocationRepository.findAllByLocationName(FIRST_EVENT_LOCATION_NAME);
+
+        assertEquals(5, eventLocations.size());
+        assertEquals(2, mostlyUsedEventLocation.size());
     }
 }
