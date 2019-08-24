@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 /**
  * Service for scheduling events code creation for new locations
@@ -30,9 +31,13 @@ public class EventCodeService {
         this.eventRepository = eventRepository;
     }
 
+    /**
+     * Generating Event Code for Location with today day of week
+     * if event with today date does not exist in the system.
+     */
 //    @Scheduled(cron = "0 0 * * * ?") //run once per hour, at top of hour
     @Scheduled(cron = "0 * * * * ?") //run once per min
-    public void generateEventsCode() {
+    public void generateEventsCodeForLocations() {
         log.debug("Generating events");
 
         List<EventLocation> eventLocations = eventLocationRepository.findAllByEventDayOfWeek(
@@ -55,6 +60,20 @@ public class EventCodeService {
             } else {
                 log.debug("Event already exist");
             }
+        });
+    }
+
+    @Scheduled(cron = "0 * * * * ?")
+    public void generateEventsCodeForNewEvents() {
+        log.debug("Checking for newly added Events");
+
+        List<Event> eventsWithoutCode = eventRepository.findAllByEventCode(null);
+
+        eventsWithoutCode.forEach(event -> {
+            log.debug("Generating event code for {}", event);
+            event.setEventCode(UUID.randomUUID().toString());
+            eventRepository.save(event);
+            log.debug("New event code was generated for event {}", event);
         });
     }
 }

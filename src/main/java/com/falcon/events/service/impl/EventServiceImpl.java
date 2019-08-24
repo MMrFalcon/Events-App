@@ -4,6 +4,8 @@ import com.falcon.events.domain.Event;
 import com.falcon.events.repository.EventRepository;
 import com.falcon.events.service.EventService;
 import com.falcon.events.service.dto.EventDTO;
+import com.falcon.events.service.dto.EventLocationDTO;
+import com.falcon.events.service.mapper.EventLocationMapper;
 import com.falcon.events.service.mapper.EventMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,6 +14,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.Optional;
 
 /**
@@ -27,9 +30,12 @@ public class EventServiceImpl implements EventService {
 
     private final EventMapper eventMapper;
 
-    public EventServiceImpl(EventRepository eventRepository, EventMapper eventMapper) {
+    private final EventLocationMapper eventLocationMapper;
+
+    public EventServiceImpl(EventRepository eventRepository, EventMapper eventMapper, EventLocationMapper eventLocationMapper) {
         this.eventRepository = eventRepository;
         this.eventMapper = eventMapper;
+        this.eventLocationMapper = eventLocationMapper;
     }
 
     /**
@@ -84,5 +90,17 @@ public class EventServiceImpl implements EventService {
     public void delete(Long id) {
         log.debug("Request to delete Event : {}", id);
         eventRepository.deleteById(id);
+    }
+
+    /**
+     *
+     * @param eventLocation event location entity
+     * @param eventDate date of event
+     * @return Option EventDTO
+     */
+    @Override
+    public Optional<EventDTO> getEventByLocationAndEventDate(EventLocationDTO eventLocation, LocalDate eventDate) {
+       Optional<Event> optionalEvent =  eventRepository.findByEventLocationAndEventDate(eventLocationMapper.toEntity(eventLocation), eventDate);
+        return optionalEvent.map(eventMapper::toDto);
     }
 }
