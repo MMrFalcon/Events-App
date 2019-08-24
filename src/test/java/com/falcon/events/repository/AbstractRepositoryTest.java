@@ -4,6 +4,8 @@ import com.falcon.events.bootstrap.EventsBootstrap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import javax.persistence.EntityManager;
+
 abstract class AbstractRepositoryTest {
 
     @Autowired
@@ -26,4 +28,7 @@ abstract class AbstractRepositoryTest {
 
     @Autowired
     EventsBootstrap eventsBootstrap;
+
+    @Autowired
+    EntityManager entityManager;
 }
