@@ -3,6 +3,7 @@ package com.falcon.events.web.rest;
 import com.falcon.events.service.EventService;
 import com.falcon.events.service.dto.EventDTO;
 import com.falcon.events.web.rest.errors.BadRequestAlertException;
+import com.falcon.events.web.rest.errors.EventAlreadyExistException;
 import io.github.jhipster.web.util.HeaderUtil;
 import io.github.jhipster.web.util.PaginationUtil;
 import io.github.jhipster.web.util.ResponseUtil;
@@ -56,6 +57,8 @@ public class EventResource {
         if (eventDTO.getId() != null) {
             throw new BadRequestAlertException("A new event cannot already have an ID", ENTITY_NAME, "idexists");
         }
+
+        checkForDuplicatedEvent(eventDTO);
         EventDTO result = eventService.save(eventDTO);
         return ResponseEntity.created(new URI("/api/events/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, false, ENTITY_NAME, result.getId().toString()))
@@ -77,6 +80,8 @@ public class EventResource {
         if (eventDTO.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
+
+        checkForDuplicatedEvent(eventDTO);
         EventDTO result = eventService.save(eventDTO);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(applicationName, false, ENTITY_NAME, eventDTO.getId().toString()))
@@ -86,9 +91,9 @@ public class EventResource {
     /**
      * {@code GET  /events} : get all the events.
      *
-     * @param pageable the pagination information.
+     * @param pageable    the pagination information.
      * @param queryParams a {@link MultiValueMap} query parameters.
-     * @param uriBuilder a {@link UriComponentsBuilder} URI builder.
+     * @param uriBuilder  a {@link UriComponentsBuilder} URI builder.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of events in body.
      */
     @GetMapping("/events")
@@ -123,5 +128,13 @@ public class EventResource {
         log.debug("REST request to delete Event : {}", id);
         eventService.delete(id);
         return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(applicationName, false, ENTITY_NAME, id.toString())).build();
+    }
+
+    private void checkForDuplicatedEvent(EventDTO eventDTO) {
+        Optional<EventDTO> optionalEvent = eventService.getEventByLocationAndEventDate(eventDTO.getEventLocationDTO(), eventDTO.getEventDate());
+
+        if (optionalEvent.isPresent()) {
+            throw new EventAlreadyExistException("Event already exist in system", "eventDTO", "eventExist");
+        }
     }
 }

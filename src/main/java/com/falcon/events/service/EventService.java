@@ -1,9 +1,11 @@
 package com.falcon.events.service;
 
 import com.falcon.events.service.dto.EventDTO;
+import com.falcon.events.service.dto.EventLocationDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.time.LocalDate;
 import java.util.Optional;
 
 /**
@@ -42,4 +44,12 @@ public interface EventService {
      * @param id the id of the entity.
      */
     void delete(Long id);
+
+    /**
+     *
+     * @param eventLocation event location entity
+     * @param eventDate date of event
+     * @return optional event
+     */
+    Optional<EventDTO> getEventByLocationAndEventDate(EventLocationDTO eventLocation, LocalDate eventDate);
 }
