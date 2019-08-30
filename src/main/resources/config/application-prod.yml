@@ -58,10 +58,10 @@ spring:
   liquibase:
     contexts: prod
   mail:
-    host: localhost
-    port: 25
-    username:
-    password:
+    host: mail41.mydevil.net
+    port: 465
+    username: ${Musername}
+    password: ${Mpassword}
   thymeleaf:
     cache: true
 
