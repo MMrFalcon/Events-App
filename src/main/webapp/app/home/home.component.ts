@@ -11,7 +11,7 @@ import { FormBuilder, Validators } from '@angular/forms';
 import { IEvent } from 'app/shared/model/event.model';
 import { EventService } from 'app/entities/event';
 import { Observable } from 'rxjs';
-import moment = require('moment');
+import * as moment from 'moment';
 
 @Component({
   selector: 'jhi-home',

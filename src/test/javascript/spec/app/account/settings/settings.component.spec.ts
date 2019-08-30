@@ -1,9 +1,9 @@
-import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormBuilder } from '@angular/forms';
-import { Observable, throwError } from 'rxjs';
+import { throwError } from 'rxjs';
 
 import { EventsTestModule } from '../../../test.module';
-import { AccountService, Account } from 'app/core';
+import { AccountService } from 'app/core';
 import { SettingsComponent } from 'app/account/settings/settings.component';
 
 describe('Component Tests', () => {
@@ -33,7 +33,9 @@ describe('Component Tests', () => {
       const accountValues = {
         firstName: 'John',
         lastName: 'Doe',
-
+        authorities: ['ROLE_ORGANIZER', 'ROLE_MEMBER', 'ROLE_ADMIN'],
+        homeLocation: null,
+        imageURL: undefined,
         activated: true,
         email: 'john.doe@mail.com',
         langKey: 'en',

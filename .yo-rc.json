@@ -37,6 +37,8 @@
         "version": "0.0.1"
       }
     ],
-    "enableTranslation": false
+    "enableTranslation": false,
+    "herokuAppName": "falcon-events",
+    "herokuDeployType": "jar"
   }
 }

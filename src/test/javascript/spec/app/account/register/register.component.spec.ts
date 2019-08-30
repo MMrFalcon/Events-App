@@ -1,6 +1,6 @@
-import { ComponentFixture, TestBed, async, inject, tick, fakeAsync } from '@angular/core/testing';
+import { async, ComponentFixture, fakeAsync, inject, TestBed, tick } from '@angular/core/testing';
 import { FormBuilder } from '@angular/forms';
-import { Observable, of, throwError } from 'rxjs';
+import { of, throwError } from 'rxjs';
 
 import { EventsTestModule } from '../../../test.module';
 import { EMAIL_ALREADY_USED_TYPE, LOGIN_ALREADY_USED_TYPE } from 'app/shared';
@@ -55,7 +55,8 @@ describe('Component Tests', () => {
           email: '',
           password: 'password',
           login: '',
-          langKey: 'en'
+          langKey: 'en',
+          homeLocation: ''
         });
         expect(comp.success).toEqual(true);
         expect(comp.errorUserExists).toBeNull();
