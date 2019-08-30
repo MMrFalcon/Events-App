@@ -2,6 +2,7 @@ package com.falcon.events.web.rest;
 
 import com.falcon.events.EventsApp;
 import com.falcon.events.domain.Event;
+import com.falcon.events.repository.EventLocationRepository;
 import com.falcon.events.repository.EventRepository;
 import com.falcon.events.service.EventService;
 import com.falcon.events.service.dto.EventDTO;
@@ -67,6 +68,9 @@ public class EventResourceIT {
     @Autowired
     private Validator validator;
 
+    @Autowired
+    private EventLocationRepository eventLocationRepository;
+
     private MockMvc restEventMockMvc;
 
     private Event event;
@@ -117,6 +121,7 @@ public class EventResourceIT {
     @Transactional
     public void createEvent() throws Exception {
         int databaseSizeBeforeCreate = eventRepository.findAll().size();
+        event.setEventLocation(eventLocationRepository.findById(1L).get());
 
         // Create the Event
         EventDTO eventDTO = eventMapper.toDto(event);
@@ -187,7 +192,7 @@ public class EventResourceIT {
             .andExpect(jsonPath("$.[*].eventDate").value(hasItem(DEFAULT_EVENT_DATE.toString())))
             .andExpect(jsonPath("$.[*].eventCode").value(hasItem(DEFAULT_EVENT_CODE.toString())));
     }
-    
+
     @Test
     @Transactional
     public void getEvent() throws Exception {
