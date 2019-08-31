@@ -4,7 +4,7 @@
 
     <groupId>com.falcon.events</groupId>
     <artifactId>events</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.1-SNAPSHOT</version>
     <packaging>jar</packaging>
     <name>Events</name>
 
@@ -1148,6 +1148,6 @@
     </profiles>
     <scm>
         <developerConnection>scm:git:https://github.com/MMrFalcon/Events-App.git</developerConnection>
-        <tag>events-1.0.0</tag>
+        <tag>HEAD</tag>
     </scm>
 </project>
